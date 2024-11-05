@@ -1,2 +1,2 @@
-from .stock_price_revenue_crawler.main import query_data
+from .NeuroStats_API.utils import StatsFetcher
 from .load_data import get_full_fake
