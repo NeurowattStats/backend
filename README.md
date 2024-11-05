@@ -79,6 +79,24 @@ ticker 限定為 str, ex: "2330"
 #### 取得公司財務數據
 
 **請求**
+```javascript
+fetch("http://0.0.0.0:9090/neurostats/fundamental/vitals/finance_data", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ ticker: "2330" })
+})
+.then(response => response.json())
+.then(data => {
+    console.log("Finance Data:", data);
+})
+.catch(error => {
+    console.error("Error fetching finance data:", error);
+});
+```
+
+**請求**
 ```bash
 curl -X POST "http://0.0.0.0:9090/neurostats/fundamental/vitals/finance_data" -H "Content-Type: application/json" -d '{"ticker": "2330"}'
 ```
