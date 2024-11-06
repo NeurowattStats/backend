@@ -163,4 +163,58 @@ async def test_get_finance_data():
 - `neurostats/valuation/` 提供公司估值的相關數據。
 
 
+# 使用 Docker 啟動服務
+
+此專案支援使用 Docker 進行容器化部署，以下是使用 Docker 啟動服務的步驟：
+
+## 1. 構建 Docker 映像
+
+確保您在專案的根目錄，然後運行以下命令來構建 Docker 映像：
+
+```bash
+docker build -t neurostats-backend .
+```
+
+這會根據專案中的 Dockerfile 構建出一個名為 `neurostats-backend` 的 Docker 映像。
+
+## 2. 啟動容器
+
+使用以下命令來運行容器，並根據需求指定端口（例如 8080）：
+
+```bash
+docker run -d -p 8080:8080 -e PORT=8080 neurostats-backend
+```
+
+- `-d`：使容器在後台運行。
+- `-p 8080:8080`：將容器的 8080 埠號映射到主機的 8080 埠號。
+- `-e PORT=8080`：設置環境變數 `PORT`，指定應用程式在容器內運行的端口。
+
+## 3. 訪問服務
+
+啟動後，您可以在瀏覽器或 API 測試工具中訪問：
+
+```plaintext
+http://localhost:8080
+```
+
+## 4. 檢查容器狀態
+
+使用以下命令來檢查容器是否正常運行：
+
+```bash
+docker ps
+```
+
+## 停止容器
+
+要停止運行中的容器，使用以下命令：
+
+```bash
+docker stop <CONTAINER_ID>
+```
+
+用 `docker ps` 查找到 `<CONTAINER_ID>`。
+
+
+
 
