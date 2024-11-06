@@ -33,7 +33,7 @@ async def get_table(request: TickerRequest):
     try:
         responser = ValueResponse(ticker=request.ticker)
 
-        return responser.years_10_values
+        return responser.get_value_table()
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
