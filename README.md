@@ -25,7 +25,9 @@
    python -m venv venv
    source venv/bin/activate  # Windows 使用 venv\Scripts\activate
    pip install -r requirements.txt
-   
+   ```
+
+   ```bash
    cd utils 
    git clone https://github.com/NeurowattStats/NeuroStats_API.git # 篩選 data package
    ```
@@ -44,7 +46,8 @@
    然後啟動服務：
 
    ```bash
-   uvicorn main:app
+   cd ..
+   python main.py
    ```
 
    API 將根據 `.env` 文件中的配置在相應的主機和端口運行，默認情況下為 `http://0.0.0.0:9090`。
