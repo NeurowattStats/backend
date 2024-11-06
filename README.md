@@ -137,6 +137,14 @@ curl -X POST "http://0.0.0.0:9090/neurostats/valuation/overview" -H "Content-Typ
   "EV_S_Ratio": 4.9
 }
 ```
+### 查看 API 文件
+
+API 啟動後，可以通過以下方式查看文件：
+
+- **Swagger UI**（互動式 API 文件）：在瀏覽器中打開 `http://0.0.0.0:9090/docs`
+- **ReDoc**（詳細 API 文件）：在瀏覽器中打開 `http://0.0.0.0:9090/redoc`
+
+這兩個文件可以幫助開發者快速瀏覽和測試 API 端點，並了解每個端點的輸入參數和返回值。
 
 ## API 測試
 
