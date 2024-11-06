@@ -11,6 +11,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 複製應用程式程式碼
 COPY . .
 
+# 拉取外部依賴 package
+RUN cd utils && git clone https://github.com/NeurowattStats/stock_price_revenue_crawler.git
+
 # 設定預設端口（若未設置 PORT 環境變數，將使用 9090）
 ENV PORT 9090
 
