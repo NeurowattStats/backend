@@ -27,7 +27,7 @@
    pip install -r requirements.txt
    
    cd utils 
-   git clone https://github.com/NeurowattStats/stock_price_revenue_crawler.git # 篩選 data package
+   git clone https://github.com/NeurowattStats/NeuroStats_API.git # 篩選 data package
    ```
    
 3. 啟動 API 服務：
@@ -198,7 +198,7 @@ async def test_get_finance_data():
 確保您在專案的根目錄，然後運行以下命令來構建 Docker 映像：
 
 ```bash
-docker build -t neurostats-backend .
+docker build --build-arg GITHUB_TOKEN=your_personal_access_token -t neurostats-backend .
 ```
 
 這會根據專案中的 Dockerfile 構建出一個名為 `neurostats-backend` 的 Docker 映像。
