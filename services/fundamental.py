@@ -52,7 +52,7 @@ class RevenStatements(FundResponse):
     def get_cumulative_text(self):
         return 'in process'
 
-class ProfitLossTable(FundResponse):
+class ProfitLoss(FundResponse):
     
     def __init__(self, ticker: str):
         super().__init__(ticker)

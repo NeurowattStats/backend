@@ -3,112 +3,179 @@ from fastapi import APIRouter, HTTPException
 from models import (TickerRequest, FinanceData, 
                     PerShareData, FinancialRatios)
 
-from services import FundVitals, RevenStatements
+from services import (FundVitals, FundResponse, RevenStatements,
+                      ProfitLoss, BalanceSheet, CashflowSheet,
+                      Dividend, Report)
+
+                      
 
 router = APIRouter()
 
+def handle_request(ticker, service_class, method_name, include_content=False):
+    """Helper function to handle request and response generation."""
+    try:
+        responser = service_class(ticker)
+        method = getattr(responser, method_name)
+        data = method()
+        
+        if include_content:
+            content_method_name = f"{method_name}_text"
+            if hasattr(responser, content_method_name):
+                content_method = getattr(responser, content_method_name)
+                content = content_method()
+                return {'data': data, 'content': content}
+            else:
+                raise AttributeError(f"No content method found for {method_name}")
+        
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Vitals
 @router.post("/vitals/finance_data", response_model=FinanceData)
 async def get_finance_data(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_finance'
+    )
 
-    try:
-        responser = FundVitals(ticker=request.ticker)
-        data = responser.get_finance()
-
-        return FinanceData(
-            quarter=data.get('Quarter'),
-            unit=data.get('Unit'),
-            operating_revenue=data.get('Operating_Revenue'),
-            gross_profit=data.get('Gross_Profit'),
-            operating_income=data.get('Operating_Income'),
-            net_income = data.get('Net_Income'),
-            cash_flow_from_operating_activities=data.get('Cash_Flow_from_Operating_Activities'),
-            net_cash_flow_from_investing_activities=data.get('Net_Cash_Flow_from_Investing_Activities'),
-            net_cash_flow_from_financing_activities=data.get('Net_Cash_Flow_from_Financing_Activities'),
-            free_cash_flow = data.get('Free_Cash_Flow')
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
-    
 @router.post("/vitals/per_share", response_model=PerShareData)
 async def get_per_share(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_per_share'
+    )
 
-    try:
-        responser = FundVitals(ticker=request.ticker)
-        data = responser.get_per_share()
-
-        return PerShareData(
-            quarter=data.get('Quarter'),
-            unit=data.get('Unit'),
-            revenue_per_share=data.get('Revenue_per_Share'),
-            gross_profit_per_share = data.get('Gross_Profit_per_Share'),
-            operating_income_per_share=data.get('Operating_Income_per_Share'),
-            earnings_per_share_eps=data.get('Earnings_per_Share_EPS'),
-            operating_cash_flow_per_share=data.get('Operating_Cash_Flow_per_Share'),
-            free_cash_flow_per_share = data.get('Free_Cash_Flow_per_Share'),
-            interest_bearing_debt_per_share=data.get('Interest_Bearing_Debt_per_Share'),
-            net_asset_per_share=data.get('Net_Asset_per_Share')
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
 @router.post("/vitals/ratios", response_model=FinancialRatios)
 async def get_ratios(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_ratios'
+    )
 
-    try:
-        responser = FundVitals(ticker=request.ticker)
-        data = responser.get_ratios()
-
-        return FinancialRatios(
-            quarter=data.get('Quarter'),
-            unit=data.get('Unit'),
-            return_on_assets_roa=data.get('Return_on_Assets_ROA'),
-            return_on_equity_roe = data.get('Return_on_Equity_ROE'),
-            gross_profit_to_total_assets=data.get('Gross_Profit_to_Total_Assets'),
-            return_on_capital_employed_roce=data.get('Return_on_Capital_Employed_ROCE'),
-            gross_profit_margin=data.get('Gross_Profit_Margin'),
-            operating_income_margin = data.get('Operating_Income_Margin'),
-            net_profit_margin=data.get('Net_Profit_Margin'),
-            operating_cash_flow_margin=data.get('Operating_Cash_Flow_Margin')
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
+# Revenues
 @router.post("/revenue/monthly")
 async def get_monthly(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        RevenStatements, 
+        'get_monthly'
+    )
 
-    try:
-        responser = RevenStatements(ticker=request.ticker)
-        data = responser.get_monthly()
-
-        return data
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
 @router.post("/revenue/this_month")
 async def get_this_month(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        RevenStatements, 
+        'get_this_month'
+    )
 
-    try:
-        responser = RevenStatements(ticker=request.ticker)
-        data = responser.get_this_month()
-
-        return data
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
 @router.post("/revenue/this_month_text")
 async def get_this_month_text(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        RevenStatements, 
+        'get_this_month_text'
+    )
 
-    try:
-        responser = RevenStatements(ticker=request.ticker)
-        data = responser.get_this_month_text()
+# BalanceSheet
+@router.post("/balance_sheet/full_table")
+async def get_balance_sheet_full_table(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_full_table'
+    )
 
-        return data
+@router.post("/balance_sheet/total_asset")
+async def get_total_asset(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_total_asset', 
+        include_content=True
+    )
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@router.post("/balance_sheet/current_asset")
+async def get_current_asset(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_current_asset', 
+        include_content=True
+    )
+
+@router.post("/balance_sheet/non_current_asset")
+async def get_non_current_asset(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_non_current_asset', 
+        include_content=True
+    )
+
+@router.post("/balance_sheet/current_debt")
+async def get_current_debt(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_current_debt', 
+        include_content=True
+    )
+
+@router.post("/balance_sheet/non_current_debt")
+async def get_non_current_debt(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_non_current_debt', 
+        include_content=True
+    )
+
+@router.post("/balance_sheet/equity")
+async def get_equity(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_equity', 
+        include_content=True
+    )
+
+# Cashflow
+@router.post("/cashflow/full_table")
+async def get_cashflow_full_table(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        CashflowSheet, 
+        'get_full_table'
+    )
+
+@router.post("/cashflow/operation")
+async def get_operation(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        CashflowSheet, 
+        'get_operation', 
+        include_content=True
+    )
+
+@router.post("/cashflow/investment")
+async def get_investment(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        CashflowSheet, 
+        'get_investment', 
+        include_content=True
+    )
+
+@router.post("/cashflow/fundraising")
+async def get_fundraising(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        CashflowSheet, 
+        'get_fundraising', 
+        include_content=True
+    )
