@@ -13,6 +13,9 @@ class TechVitals(TechResponse):
 
     def __init__(self, ticker):
         super().__init__(ticker)
+
+    def get_vitals(self):
+        return 'None'
         
 
 class TechDaily(TechResponse):
@@ -22,8 +25,10 @@ class TechDaily(TechResponse):
 
     def get_basic_index(self):
         
-        return self.data_fetcher.get_daily()
-
+        return ResponseService.replace_empty_values(
+            self.data_fetcher.get_daily(),
+            marker = '不適用'
+        )
 
 class TechWeekly(TechResponse):
     
@@ -32,8 +37,10 @@ class TechWeekly(TechResponse):
 
     def get_basic_index(self):
         
-        return self.data_fetcher.get_weekly()
-    
+        return ResponseService.replace_empty_values(
+            self.data_fetcher.get_weekly(),
+            marker = '不適用'
+        )    
     
 class TechMonthly(TechResponse):
     
@@ -42,7 +49,10 @@ class TechMonthly(TechResponse):
 
     def get_basic_index(self):
         
-        return self.data_fetcher.get_monthly()
+        return ResponseService.replace_empty_values(
+            self.data_fetcher.get_monthly(),
+            marker = '不適用'
+        )
     
     
 class TechQuarterly(TechResponse):
@@ -52,8 +62,10 @@ class TechQuarterly(TechResponse):
 
     def get_basic_index(self):
         
-        return self.data_fetcher.get_quarterly()
-    
+        return ResponseService.replace_empty_values(
+            self.data_fetcher.get_quarterly(),
+            marker = '不適用'
+        )
     
 class TechYearly(TechResponse):
     
@@ -62,7 +74,10 @@ class TechYearly(TechResponse):
 
     def get_basic_index(self):
         
-        return self.data_fetcher.get_yearly()
+        return ResponseService.replace_empty_values(
+            self.data_fetcher.get_yearly(),
+            marker = '不適用'
+        )
     
     
     
