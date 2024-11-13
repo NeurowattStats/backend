@@ -15,8 +15,14 @@ class TechVitals(TechResponse):
         super().__init__(ticker)
 
     def get_vitals(self):
-        return 'None'
         
+        n_days = 30
+        vitals = self.data_fetcher.get_daily().tail(n_days)
+        
+        return ResponseService.replace_empty_values(
+            vitals,
+            marker = '不適用'
+        )
 
 class TechDaily(TechResponse):
     

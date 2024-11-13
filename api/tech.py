@@ -4,14 +4,26 @@ import pandas as pd
 from fastapi import APIRouter, HTTPException
 
 from utils import handle_request
-from services import (TechVitals, TechDaily, TechWeekly, 
-                      TechMonthly, TechQuarterly, TechYearly)
-from models import TickerRequest, TechBasicIndexes, TechDailyIndexes
+
+from services import (
+    TechVitals, 
+    TechDaily, 
+    TechWeekly, 
+    TechMonthly, 
+    TechQuarterly, 
+    TechYearly
+)
+
+from models import (
+    TickerRequest, 
+    TechBasicIndexes, 
+    TechDailyIndexes
+)
 
 router = APIRouter()
 
 # %%
-@router.post("/vitals")
+@router.post("/vitals", response_model=TechDailyIndexes)
 async def get_vitals(request:TickerRequest):
     data = handle_request(
         ticker = request.ticker,
@@ -20,11 +32,7 @@ async def get_vitals(request:TickerRequest):
         include_content = False
     )
 
-    '''
-    TODO
-    add model
-    '''
-    return data
+    return construct_tech_indexes(data, daily=True)
 
 @router.post("/daily", response_model=TechDailyIndexes)
 async def get_daily(request:TickerRequest):
