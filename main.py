@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.fundamental import router as fundamental_router
 from api.valuation import router as valuation_router
+from api.tech import router as tech_router
 from dotenv import load_dotenv
 
 import uvicorn
@@ -24,6 +25,8 @@ app.include_router(fundamental_router, prefix="/neurostats/fundamental", tags=["
 # 包含 valuation 的路由
 app.include_router(valuation_router, prefix="/neurostats/valuation", tags=["Valuation"])
 
+# 包含 tech 的路由
+app.include_router(tech_router, prefix="/neurostats/tech", tags=["Tech"])  # 新增的路由
 # 啟動應用
 if __name__ == "__main__":
     # 加載 .env 文件中的環境變量
