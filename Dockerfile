@@ -14,10 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 複製應用程式程式碼
 COPY . .
 
-# 拉取外部依賴 package（使用 Personal Access Token）
-ARG GITHUB_TOKEN
-RUN cd utils && git clone https://$GITHUB_TOKEN@github.com/NeurowattStats/NeuroStats_API.git
-
 # 設定預設端口
 ENV PORT 8080
 
