@@ -22,7 +22,7 @@ RUN cd utils && git clone https://$GITHUB_TOKEN@github.com/NeurowattStats/NeuroS
 ENV PORT 8080
 
 # 開放應用程式端口
-EXPOSE ${PORT}
+EXPOSE 8080
 
 # 啟動應用程式
 CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]
