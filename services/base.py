@@ -1,10 +1,10 @@
-
-import datetime
-import pandas as pd
 import numpy as np
+import pandas as pd
+from pymongo import MongoClient
+
 
 from database import MongoConnector
-from utils import StatsFetcher, get_full_fake
+from utils import get_full_fake
 import os
 
 
@@ -14,8 +14,8 @@ class ResponseService:
 
         self.mongo_address = os.getenv("MONGO_ADDRESS")
         self.db_connector = MongoConnector(self.mongo_address)
+        self.mongo_clinet = MongoClient(os.getenv('MONGO_ADDRESS'))
         self._load_collection()
-        self.data_fetcher = StatsFetcher()
         self.datetime_format = '%Y-%m-%d'
         self.full_fake = get_full_fake(path='./docs/fake_data.yaml')
         self.fake_gen = get_full_fake(path='./docs/fake_gen.yaml')
@@ -24,7 +24,6 @@ class ResponseService:
         
         name = 'company'
         collection = 'twse_stats'
-
         self.collection = self.db_connector.point_collection(
             name = name,
             collection = collection

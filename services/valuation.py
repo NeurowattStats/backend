@@ -1,3 +1,5 @@
+import os
+from neurostats_API.fetchers.value_invest import ValueFetcher
 from .base import ResponseService
 
 
@@ -6,6 +8,10 @@ class ValueResponse(ResponseService):
     def __init__(self, ticker:str):
         super().__init__()
         self.ticker = ticker
+        self.data_fetcher = ValueFetcher(
+            ticker = self.ticker,
+            db_client = self.mongo_clinet
+        )
         self._get_10_years_values()
     
     def get_value_table(self):
@@ -31,7 +37,7 @@ class ValueResponse(ResponseService):
 
     def _get_10_years_values(self):
         
-        self.years_10_values = self.data_fetcher.get_value_sheet(self.ticker)
+        self.years_10_values = self.data_fetcher.query_data()
 
 
         
