@@ -1,12 +1,12 @@
-import datetime
-
 from database import MongoConnector
 from utils import StatsFetcher, get_full_fake
+import os
 
 class ResponseService:
 
     def __init__(self):
-        self.mongo_address = "mongodb://neurowatt:neurodb123@db.neurowatt.ai:27017/neurowatt"
+
+        self.mongo_address = os.getenv("MONGO_ADDRESS")
         self.db_connector = MongoConnector(self.mongo_address)
         self._load_collection()
         self.data_fetcher = StatsFetcher()
