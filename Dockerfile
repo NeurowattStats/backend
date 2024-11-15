@@ -19,10 +19,10 @@ ARG GITHUB_TOKEN
 RUN cd utils && git clone https://$GITHUB_TOKEN@github.com/NeurowattStats/NeuroStats_API.git
 
 # 設定預設端口
-ENV PORT 9090
+ENV PORT 8080
 
 # 開放應用程式端口
-EXPOSE 9090
+EXPOSE ${PORT}
 
 # 啟動應用程式
 CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]
