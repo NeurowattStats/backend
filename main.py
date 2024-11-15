@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     # 從環境變量中獲取主機和端口，默認為 0.0.0.0 和 9090
     host = os.getenv("HOST", "0.0.0.0")
-    port = int(os.getenv("PORT", 9090))
+    port = int(os.getenv("PORT", 8080))
 
     if __name__ == "__main__":
         uvicorn.run(app, host=host, port=port)
