@@ -1,12 +1,17 @@
+import os
 from .base import ResponseService
-from utils import TechFetcher
+from neurostats_API.fetchers.tech import TechFetcher
+
 
 class TechResponse(ResponseService):
     
     def __init__(self, ticker:str):
         super().__init__()
         self.ticker = ticker
-        self.data_fetcher = TechFetcher(self.ticker)
+        self.data_fetcher = TechFetcher(
+            ticker = self.ticker,
+            db_client = self.mongo_clinet
+        )
 
 
 class TechVitals(TechResponse):
