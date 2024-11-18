@@ -1,7 +1,6 @@
 from .request import TickerRequest
-from .fundamental import (FinanceData, PerShareData, FinancialRatios,
-                          OverviewModel, PerShareModel, ProfitabilityModel,
+from .fundamental import (OverviewModel, PerShareModel, ProfitabilityModel,
                           GrowthMomentumModel, FinancialResilienceModel,
-                          BalanceSheetModel)
+                          BalanceSheetModel, OperatingIndicatorsModel)
 from .valuation import ValuationOverview
 from .tech import TechBasicIndexes, TechDailyIndexes

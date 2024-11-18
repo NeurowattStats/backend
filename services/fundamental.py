@@ -7,7 +7,8 @@ from models import (
     ProfitabilityModel, 
     GrowthMomentumModel, 
     FinancialResilienceModel, 
-    BalanceSheetModel
+    BalanceSheetModel,
+    OperatingIndicatorsModel
 )
  
 # %%
@@ -72,6 +73,15 @@ class FundVitals(FundResponse):
         ]
         growth_momentum = self._get_multiple_data(growth_momentum_fields)
         return GrowthMomentumModel(year=self.year, season=self.season, **growth_momentum)
+
+    def get_operating_indicators(self) -> OperatingIndicatorsModel:
+        
+        operating_indicators_fields = [
+            'dso', 'account_receive_over_revenue', 'dio', 'inventories_revenue_ratio',
+            'dpo', 'cash_of_conversion_cycle', 'asset_turnover', 'applcation_turnover'
+        ]
+        operating_indicators = self._get_multiple_data(operating_indicators_fields)
+        return OperatingIndicatorsModel(year=self.year, season=self.season, **operating_indicators)
 
     def get_financial_resilience(self) -> FinancialResilienceModel:
         """Get a dictionary with financial resilience data."""

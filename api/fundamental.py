@@ -1,11 +1,26 @@
 from fastapi import APIRouter, HTTPException
 
-from models import (TickerRequest, FinanceData, 
-                    PerShareData, FinancialRatios)
+from models import (
+    TickerRequest,
+    OverviewModel, 
+    PerShareModel, 
+    ProfitabilityModel, 
+    GrowthMomentumModel, 
+    FinancialResilienceModel, 
+    BalanceSheetModel,
+    OperatingIndicatorsModel
+)
 
-from services import (FundVitals, FundResponse, RevenStatements,
-                      ProfitLoss, BalanceSheet, CashflowSheet,
-                      Dividend, Report)
+from services import (
+    FundVitals, 
+    FundResponse, 
+    RevenStatements,
+    ProfitLoss, 
+    BalanceSheet,
+    CashflowSheet,
+    Dividend, 
+    Report
+)
 
 from utils import handle_request
 
@@ -13,15 +28,15 @@ router = APIRouter()
 
 
 # Vitals
-@router.post("/vitals/finance_data", response_model=FinanceData)
-async def get_finance_data(request: TickerRequest):
+@router.post("/vitals/overview", response_model=OverviewModel)
+async def get_finance_overview(request: TickerRequest):
     return handle_request(
         request.ticker, 
         FundVitals, 
         'get_finance'
     )
 
-@router.post("/vitals/per_share", response_model=PerShareData)
+@router.post("/vitals/per_share", response_model=PerShareModel)
 async def get_per_share(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -29,12 +44,44 @@ async def get_per_share(request: TickerRequest):
         'get_per_share'
     )
 
-@router.post("/vitals/ratios", response_model=FinancialRatios)
-async def get_ratios(request: TickerRequest):
+@router.post("/vitals/profitability", response_model=ProfitabilityModel)
+async def get_profitability(request: TickerRequest):
     return handle_request(
         request.ticker, 
         FundVitals, 
-        'get_ratios'
+        'get_profitability'
+    )
+
+@router.post("/vitals/growth_momentum", response_model=GrowthMomentumModel)
+async def get_growth_momentum(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_growth_momentum'
+    )
+
+@router.post("/vitals/operating_indicators", response_model=OperatingIndicatorsModel)
+async def get_operating_indicators(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_operating_indicators'
+    )
+
+@router.post("/vitals/financial_resilience", response_model=FinancialResilienceModel)
+async def get_financial_resilience(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_financial_resilience'
+    )
+
+@router.post("/vitals/balance_sheet", response_model=BalanceSheetModel)
+async def get_balance_sheet(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_balance_sheet'
     )
 
 # Revenues
