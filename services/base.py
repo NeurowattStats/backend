@@ -1,9 +1,8 @@
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
-
-
 from database import MongoConnector
+
 from utils import get_full_fake
 import os
 

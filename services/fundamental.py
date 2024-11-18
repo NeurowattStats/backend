@@ -1,6 +1,7 @@
 # %%
 from .base import ResponseService
-
+from neurostats_API.fetchers.finance_overview import FinanceOverviewFetcher
+ 
 # %%
 class FundResponse(ResponseService):
 
@@ -8,24 +9,117 @@ class FundResponse(ResponseService):
         super().__init__()
         self.ticker = ticker
 
-    @staticmethod
-    def _get_data(data: dict, key: str, default='不適用'):
+    def _get_data(self, data: dict, key: str, default='不適用'):
         """Retrieve data with a key from the given data structure and handle missing values."""
         return data.get(key, default)
-
+    
 class FundVitals(FundResponse):
     
     def __init__(self, ticker: str):
         super().__init__(ticker)
+        self.data_fetcher = FinanceOverviewFetcher()
+        self.full_data = self.data_fetcher.query_data()
+        self.company_name = self.full_data.get('company_name')
 
-    def get_finance(self) -> dict:
-        return FundResponse._get_data(self.full_fake, 'finance')
+        self.recent_season_vitals = self.full_data.get('seasonal_data')
+        self.year = self.recent_season_vitals.get('year')
+        self.season = self.recent_season_vitals.get('season')
+
+    def _get_multiple_data(self, fields: list) -> dict:
+        """Helper method to retrieve multiple fields from seasonal data."""
+        return {field: self._get_data(self.recent_season_vitals, field) for field in fields}
+
+
+    def get_overview(self) -> dict:
+
+        overview_fields = [
+            'revenue', 'gross_profit', 'operating_income', 'net_income',
+            'operating_cash_flow', 'invest_cash_flow', 'financing_cash_flow'
+        ]
+
+        overview = self._get_multiple_data(overview_fields)
+        
+        return {
+            'year': self.year,
+            'season': self.season,
+            **overview
+        }
     
     def get_per_share(self) -> dict:
-        return FundResponse._get_data(self.full_fake, 'per_share_data')
+
+        per_share_fields = [
+            'revenue_per_share', 'gross_per_share', 'operating_income_per_share',
+            'eps', 'operating_cash_flow_per_share', 'fcf_per_share'
+        ]
+
+        per_share = self._get_multiple_data(per_share_fields)
+
+        return {
+            'year': self.year,
+            'season': self.season,
+            **per_share
+        }
     
-    def get_ratios(self) -> dict:
-        return FundResponse._get_data(self.full_fake, 'financial_ratios')
+    def get_profitability(self) -> dict:
+
+        profitability_fields = [
+            'roa', 'roe', 'gross_over_asset', 'roce', 'gross_profit_margin',
+            'operation_profit_rate', 'net_income_rate', 'operating_cash_flow_profit_rate'
+        ]
+
+        profitability = self._get_multiple_data(profitability_fields)
+
+        return {
+            'year': self.year,
+            'season': self.season,
+            **profitability
+        }
+    
+    def get_growth_momentum(self) -> dict:
+
+        growth_momentum_fields = [
+            'revenue_YoY', 'gross_prof_YoY', 'operating_income_YoY', 'net_income_YoY',
+            'operating_cash_flow_YoY', 'operating_cash_flow_per_share_YoY'
+        ]
+
+        growth_momentum = self._get_multiple_data(growth_momentum_fields)
+
+        return {
+            'year': self.year,
+            'season': self.season,
+            **growth_momentum
+        }
+    
+    def get_financial_resilience(self) -> dict:
+
+        financial_resilience_fields = [
+            'current_ratio', 'quick_ratio', 'debt_to_equity_ratio', 
+            'net_debt_to_equity_ratio', 'interest_coverage_ratio', 'debt_to_operating_cash_flow',
+            'debt_to_free_cash_flow', 'cash_flow_ratio'
+        ]
+
+        financial_resilience = self._get_multiple_data(financial_resilience_fields)
+
+        return {
+            'year': self.year,
+            'season': self.season,
+            **financial_resilience
+        }
+    
+    def get_balance_sheet(self) -> dict:
+        
+        balance_sheet_fields = [
+            'current_assets', 'current_liabilities', 'non_current_assets',
+            'non_current_liabilities', 'total_asset', 'total_liabilities', 'equity'
+        ]
+        
+        balance_sheet = self._get_multiple_data(balance_sheet_fields)
+
+        return {
+            'year': self.year,
+            'season': self.season,
+            **balance_sheet
+        }
 
 class RevenStatements(FundResponse):
 
