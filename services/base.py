@@ -1,13 +1,15 @@
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
-
 from database import MongoConnector
 from utils import get_full_fake
 import os
 
 
 class ResponseService:
+    """
+    Base service class providing common methods and properties for financial data handling.
+    """
 
     def __init__(self):
 
@@ -18,6 +20,7 @@ class ResponseService:
         self.datetime_format = '%Y-%m-%d'
         self.full_fake = get_full_fake(path='./docs/fake_data.yaml')
         self.fake_gen = get_full_fake(path='./docs/fake_gen.yaml')
+        self.collection = self._load_collection()
 
     def _load_collection(self):
         
