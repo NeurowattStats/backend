@@ -1,4 +1,3 @@
-import os
 from .base import ResponseService
 from neurostats_API.fetchers.tech import TechFetcher
 

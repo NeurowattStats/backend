@@ -1,114 +1,209 @@
 from fastapi import APIRouter, HTTPException
 
-from models import (TickerRequest, FinanceData, 
-                    PerShareData, FinancialRatios)
+from models import (
+    TickerRequest,
+    OverviewModel, 
+    PerShareModel, 
+    ProfitabilityModel, 
+    GrowthMomentumModel, 
+    FinancialResilienceModel, 
+    BalanceSheetModel,
+    OperatingIndicatorsModel
+)
 
-from services import FundVitals, RevenStatements
+from services import (
+    FundVitals, 
+    FundResponse, 
+    RevenStatements,
+    ProfitLoss, 
+    BalanceSheet,
+    CashflowSheet,
+    Dividend, 
+    Report
+)
+
+from utils import handle_request
 
 router = APIRouter()
 
-@router.post("/vitals/finance_data", response_model=FinanceData)
-async def get_finance_data(request: TickerRequest):
 
-    try:
-        responser = FundVitals(ticker=request.ticker)
-        data = responser.get_finance()
+# Vitals
+@router.post("/vitals/overview", response_model=OverviewModel)
+async def get_finance_overview(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_finance'
+    )
 
-        return FinanceData(
-            quarter=data.get('Quarter'),
-            unit=data.get('Unit'),
-            operating_revenue=data.get('Operating_Revenue'),
-            gross_profit=data.get('Gross_Profit'),
-            operating_income=data.get('Operating_Income'),
-            net_income = data.get('Net_Income'),
-            cash_flow_from_operating_activities=data.get('Cash_Flow_from_Operating_Activities'),
-            net_cash_flow_from_investing_activities=data.get('Net_Cash_Flow_from_Investing_Activities'),
-            net_cash_flow_from_financing_activities=data.get('Net_Cash_Flow_from_Financing_Activities'),
-            free_cash_flow = data.get('Free_Cash_Flow')
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
-    
-@router.post("/vitals/per_share", response_model=PerShareData)
+@router.post("/vitals/per_share", response_model=PerShareModel)
 async def get_per_share(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_per_share'
+    )
 
-    try:
-        responser = FundVitals(ticker=request.ticker)
-        data = responser.get_per_share()
+@router.post("/vitals/profitability", response_model=ProfitabilityModel)
+async def get_profitability(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_profitability'
+    )
 
-        return PerShareData(
-            quarter=data.get('Quarter'),
-            unit=data.get('Unit'),
-            revenue_per_share=data.get('Revenue_per_Share'),
-            gross_profit_per_share = data.get('Gross_Profit_per_Share'),
-            operating_income_per_share=data.get('Operating_Income_per_Share'),
-            earnings_per_share_eps=data.get('Earnings_per_Share_EPS'),
-            operating_cash_flow_per_share=data.get('Operating_Cash_Flow_per_Share'),
-            free_cash_flow_per_share = data.get('Free_Cash_Flow_per_Share'),
-            interest_bearing_debt_per_share=data.get('Interest_Bearing_Debt_per_Share'),
-            net_asset_per_share=data.get('Net_Asset_per_Share')
-        )
+@router.post("/vitals/growth_momentum", response_model=GrowthMomentumModel)
+async def get_growth_momentum(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_growth_momentum'
+    )
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
-@router.post("/vitals/ratios", response_model=FinancialRatios)
-async def get_ratios(request: TickerRequest):
+@router.post("/vitals/operating_indicators", response_model=OperatingIndicatorsModel)
+async def get_operating_indicators(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_operating_indicators'
+    )
 
-    try:
-        responser = FundVitals(ticker=request.ticker)
-        data = responser.get_ratios()
+@router.post("/vitals/financial_resilience", response_model=FinancialResilienceModel)
+async def get_financial_resilience(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_financial_resilience'
+    )
 
-        return FinancialRatios(
-            quarter=data.get('Quarter'),
-            unit=data.get('Unit'),
-            return_on_assets_roa=data.get('Return_on_Assets_ROA'),
-            return_on_equity_roe = data.get('Return_on_Equity_ROE'),
-            gross_profit_to_total_assets=data.get('Gross_Profit_to_Total_Assets'),
-            return_on_capital_employed_roce=data.get('Return_on_Capital_Employed_ROCE'),
-            gross_profit_margin=data.get('Gross_Profit_Margin'),
-            operating_income_margin = data.get('Operating_Income_Margin'),
-            net_profit_margin=data.get('Net_Profit_Margin'),
-            operating_cash_flow_margin=data.get('Operating_Cash_Flow_Margin')
-        )
+@router.post("/vitals/balance_sheet", response_model=BalanceSheetModel)
+async def get_balance_sheet(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        FundVitals, 
+        'get_balance_sheet'
+    )
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
+# Revenues
 @router.post("/revenue/monthly")
 async def get_monthly(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        RevenStatements, 
+        'get_monthly'
+    )
 
-    try:
-        responser = RevenStatements(ticker=request.ticker)
-        data = responser.get_monthly()
-
-        return data
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
 @router.post("/revenue/this_month")
 async def get_this_month(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        RevenStatements, 
+        'get_this_month'
+    )
 
-    try:
-        responser = RevenStatements(ticker=request.ticker)
-        data = responser.get_this_month()
-
-        return data
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
 @router.post("/revenue/this_month_text")
 async def get_this_month_text(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        RevenStatements, 
+        'get_this_month_text'
+    )
 
-    try:
-        responser = RevenStatements(ticker=request.ticker)
-        data = responser.get_this_month_text()
+# BalanceSheet
+@router.post("/balance_sheet/full_table")
+async def get_balance_sheet_full_table(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_full_table'
+    )
 
-        return data
+@router.post("/balance_sheet/total_asset")
+async def get_total_asset(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_total_asset', 
+        include_content=True
+    )
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@router.post("/balance_sheet/current_asset")
+async def get_current_asset(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_current_asset', 
+        include_content=True
+    )
+
+@router.post("/balance_sheet/non_current_asset")
+async def get_non_current_asset(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_non_current_asset', 
+        include_content=True
+    )
+
+@router.post("/balance_sheet/current_debt")
+async def get_current_debt(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_current_debt', 
+        include_content=True
+    )
+
+@router.post("/balance_sheet/non_current_debt")
+async def get_non_current_debt(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_non_current_debt', 
+        include_content=True
+    )
+
+@router.post("/balance_sheet/equity")
+async def get_equity(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        BalanceSheet, 
+        'get_equity', 
+        include_content=True
+    )
+
+# Cashflow
+@router.post("/cashflow/full_table")
+async def get_cashflow_full_table(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        CashflowSheet, 
+        'get_full_table'
+    )
+
+@router.post("/cashflow/operation")
+async def get_operation(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        CashflowSheet, 
+        'get_operation', 
+        include_content=True
+    )
+
+@router.post("/cashflow/investment")
+async def get_investment(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        CashflowSheet, 
+        'get_investment', 
+        include_content=True
+    )
+
+@router.post("/cashflow/fundraising")
+async def get_fundraising(request: TickerRequest):
+    return handle_request(
+        request.ticker, 
+        CashflowSheet, 
+        'get_fundraising', 
+        include_content=True
+    )
