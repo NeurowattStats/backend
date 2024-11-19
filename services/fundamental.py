@@ -20,13 +20,20 @@ class FundResponse(ResponseService):
 
     def _get_data(self, data: dict, key: str, default='不適用'):
         """Retrieve data with a key from the given data structure and handle missing values."""
-        return data.get(key, default)
+        non_empty_data = ResponseService.replace_empty_values(
+            data = data,
+            marker = default
+        )
+        return non_empty_data.get(key, default)
     
 class FundVitals(FundResponse):
     
     def __init__(self, ticker: str):
         super().__init__(ticker)
-        self.data_fetcher = FinanceOverviewFetcher()
+        self.data_fetcher = FinanceOverviewFetcher(
+            ticker = self.ticker,
+            db_client = self.mongo_clinet
+        )
         self.full_data = self.data_fetcher.query_data()
         self.company_name = self.full_data.get('company_name')
 
