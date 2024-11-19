@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from pymongo import MongoClient
 
-
 from database import MongoConnector
 from utils import get_full_fake
 import os
@@ -28,6 +27,14 @@ class ResponseService:
             name = name,
             collection = collection
         )
+
+    def _get_data(self, data: dict, key: str, default='不適用'):
+        """Retrieve data with a key from the given data structure and handle missing values."""
+        return data.get(key, default)
+
+    def _get_multiple_data(self, data: dict, fields: list) -> dict:
+        """Helper method to retrieve multiple fields from seasonal data."""
+        return {field: self._get_data(data, field) for field in fields}
         
     @staticmethod
     def replace_empty_values(data, marker):
