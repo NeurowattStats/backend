@@ -1,6 +1,6 @@
-import os
 from neurostats_API.fetchers.value_invest import ValueFetcher
 from .base import ResponseService
+from models import ValuationOverview, ValuationTable
 
 
 class ValueResponse(ResponseService):
@@ -12,32 +12,42 @@ class ValueResponse(ResponseService):
             ticker = self.ticker,
             db_client = self.mongo_clinet
         )
-        self._get_10_years_values()
-    
+        self.full_data = self.data_fetcher.query_data()
+        self.yearly_data = self.full_data.get('yearly_data')
+        self.years_10_values = self.yearly_data.set_index('year')
+        self.daily_data = self.full_data.get('daily_data')
+
     def get_value_table(self):
 
-        yearly_data = self.years_10_values['yearly_data'].set_index('year').fillna("不適用")
-        
-        return yearly_data.to_dict()
-    
+        table_df = ResponseService.replace_empty_values(
+            data = self.years_10_values,
+            marker = '不適用'
+        )
+        table = table_df.to_dict()
+
+        # return ValuationTable(
+        #     P_E = table.get('P_E', '不適用'),
+        #     P_FCF = table.get('P_FCF', '不適用'),
+        #     P_B = table.get('P_B', '不適用'),
+        #     P_S = table.get('P_S', '不適用'),
+        #     EV_OPI = table.get('EV_OPI', '不適用'),
+        #     EV_EBIT = table.get('EV_EBIT', '不適用'),
+        #     EV_EBITDA = table.get('EV_EBITDA', '不適用'),
+        #     EV_S = table.get('EV_S', '不適用'),
+        # )
+
+        return table
+
     def get_value_overview(self):
 
-        daily_data = self.years_10_values['daily_data']
-
-        return {
-            'P/E_Ratio': daily_data.get('P_E', '不適用'),
-            'P/FCF_Ratio': daily_data.get('P_FCF', '不適用'),
-            'P/B_Ratio': daily_data.get('P_B', '不適用'),
-            'P/S_Ratio': daily_data.get('P_S', '不適用'),
-            'EV/OPI_Ratio': daily_data.get('EV_OPI', '不適用'),
-            'EV/EBIT_Ratio': daily_data.get('EV_EBIT', '不適用'),
-            'EV/EBITDA_Ratio': daily_data.get('EV_EBITDA', '不適用'),
-            'EV/S_Ratio': daily_data.get('EV_S', '不適用'),
-        }
-
-    def _get_10_years_values(self):
-        
-        self.years_10_values = self.data_fetcher.query_data()
-
-
+        return ValuationOverview(
+            P_E = self.daily_data.get('P_E', '不適用'),
+            P_FCF = self.daily_data.get('P_FCF', '不適用'),
+            P_B = self.daily_data.get('P_B', '不適用'),
+            P_S = self.daily_data.get('P_S', '不適用'),
+            EV_OPI = self.daily_data.get('EV_OPI', '不適用'),
+            EV_EBIT = self.daily_data.get('EV_EBIT', '不適用'),
+            EV_EBITDA = self.daily_data.get('EV_EBITDA', '不適用'),
+            EV_S = self.daily_data.get('EV_S', '不適用')
+        )
         

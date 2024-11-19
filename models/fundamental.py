@@ -1,39 +1,81 @@
 from pydantic import BaseModel
+from typing import Optional, Union
 
-class FinanceData(BaseModel):
-    quarter: str
-    unit: str
-    operating_revenue: int
-    gross_profit: int
-    operating_income: int
-    net_income: int
-    cash_flow_from_operating_activities: int
-    net_cash_flow_from_investing_activities: int
-    net_cash_flow_from_financing_activities: int
-    free_cash_flow: int
+# vitals model 
+class OverviewModel(BaseModel):
+    year: Union[int, str]
+    season: Union[int, str]
+    revenue: Union[int, str] = '不適用'
+    gross_profit: Union[int, str] = '不適用'
+    operating_income: Union[int, str] = '不適用'
+    net_income: Union[int, str] = '不適用'
+    operating_cash_flow: Union[int, str] = '不適用'
+    invest_cash_flow: Union[int, str] = '不適用'
+    financing_cash_flow: Union[int, str] = '不適用'
 
-class PerShareData(BaseModel):
-    quarter: str
-    unit: str
-    revenue_per_share: float
-    gross_profit_per_share: float
-    operating_income_per_share: float
-    earnings_per_share_eps: float
-    operating_cash_flow_per_share: float
-    free_cash_flow_per_share: float
-    interest_bearing_debt_per_share: float
-    net_asset_per_share: float
+class PerShareModel(BaseModel):
+    year: Union[int, str]
+    season: Union[int, str]
+    revenue_per_share: Union[float, str] = '不適用'
+    gross_per_share: Union[float, str] = '不適用'
+    operating_income_per_share: Union[float, str] = '不適用'
+    eps: Union[float, str] = '不適用'
+    operating_cash_flow_per_share: Union[float, str] = '不適用'
+    fcf_per_share: Union[float, str] = '不適用'
 
-class FinancialRatios(BaseModel):
-    quarter: str
-    unit: str
-    return_on_assets_roa: float
-    return_on_equity_roe: float
-    gross_profit_to_total_assets: float
-    return_on_capital_employed_roce: float
-    gross_profit_margin: float
-    operating_income_margin: float
-    net_profit_margin: float
-    operating_cash_flow_margin: float
+class ProfitabilityModel(BaseModel):
+    year: Union[int, str]
+    season: Union[int, str]
+    roa: Union[float, str] = '不適用'
+    roe: Union[float, str] = '不適用'
+    gross_over_asset: Union[float, str] = '不適用'
+    roce: Union[float, str] = '不適用'
+    gross_profit_margin: Union[float, str] = '不適用'
+    operation_profit_rate: Union[float, str] = '不適用'
+    net_income_rate: Union[float, str] = '不適用'
+    operating_cash_flow_profit_rate: Union[float, str] = '不適用'
 
+class GrowthMomentumModel(BaseModel):
+    year: Union[int, str]
+    season: Union[int, str]
+    revenue_YoY: Union[float, str] = '不適用'
+    gross_prof_YoY: Union[float, str] = '不適用'
+    operating_income_YoY: Union[float, str] = '不適用'
+    net_income_YoY: Union[float, str] = '不適用'
+    operating_cash_flow_YoY: Union[float, str] = '不適用'
+    operating_cash_flow_per_share_YoY: Union[float, str] = '不適用'
 
+class OperatingIndicatorsModel(BaseModel):
+    year: Union[int, str]
+    season: Union[int, str]
+    dso: Union[float, str] = '不適用'  # Days Sales Outstanding
+    account_receive_over_revenue: Union[float, str] = '不適用'
+    dio: Union[float, str] = '不適用'  # Days Inventory Outstanding
+    inventories_revenue_ratio: Union[float, str] = '不適用'
+    dpo: Union[float, str] = '不適用'  # Days Payables Outstanding
+    cash_of_conversion_cycle: Union[float, str] = '不適用'
+    asset_turnover: Union[float, str] = '不適用'
+    applcation_turnover: Union[float, str] = '不適用'
+
+class FinancialResilienceModel(BaseModel):
+    year: Union[int, str]
+    season: Union[int, str]
+    current_ratio: Union[float, str] = '不適用'
+    quick_ratio: Union[float, str] = '不適用'
+    debt_to_equity_ratio: Union[float, str] = '不適用'
+    net_debt_to_equity_ratio: Union[float, str] = '不適用'
+    interest_coverage_ratio: Union[float, str] = '不適用'
+    debt_to_operating_cash_flow: Union[float, str] = '不適用'
+    debt_to_free_cash_flow: Union[float, str] = '不適用'
+    cash_flow_ratio: Union[float, str] = '不適用'
+
+class BalanceSheetModel(BaseModel):
+    year: Union[int, str]
+    season: Union[int, str]
+    current_assets: Union[int, str] = '不適用'
+    current_liabilities: Union[int, str] = '不適用'
+    non_current_assets: Union[int, str] = '不適用'
+    non_current_liabilities: Union[int, str] = '不適用'
+    total_asset: Union[int, str] = '不適用'
+    total_liabilities: Union[int, str] = '不適用'
+    equity: Union[int, str] = '不適用'
