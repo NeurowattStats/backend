@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 from models import (
     TickerRequest,
@@ -33,7 +33,7 @@ async def get_finance_overview(request: TickerRequest):
     return handle_request(
         request.ticker, 
         FundVitals, 
-        'get_finance'
+        'get_overview'
     )
 
 @router.post("/vitals/per_share", response_model=PerShareModel)
