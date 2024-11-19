@@ -1,39 +1,29 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
-from models import ValuationOverview, TickerRequest
+from models import ValuationOverview, TickerRequest, ValuationTable
 from services import ValueResponse
+
+from utils import handle_request
+
 
 router = APIRouter()
 
 @router.post("/overview", response_model=ValuationOverview)
 async def get_overview(request: TickerRequest):
 
-    try:
-        responser = ValueResponse(ticker=request.ticker)
-        valuation_overview = responser.get_value_overview()
-
-        return ValuationOverview(
-            PE_Ratio=valuation_overview.get('P/E_Ratio'),
-            PFCF_Ratio=valuation_overview.get('P/FCF_Ratio'),
-            PB_Ratio=valuation_overview.get('P/B_Ratio'),
-            PS_Ratio=valuation_overview.get('P/S_Ratio'),
-            EV_OPI_Ratio=valuation_overview.get('EV/OPI_Ratio'),
-            EV_EBIT_Ratio=valuation_overview.get('EV/EBIT_Ratio'),
-            EV_EBITDA_Ratio=valuation_overview.get('EV/EBITDA_Ratio'),
-            EV_S_Ratio=valuation_overview.get('EV/S_Ratio')
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return handle_request(
+        ticker = request.ticker,
+        service_class = ValueResponse,
+        method_name = 'get_value_overview',
+        include_content = False
+    )
     
-    
-@router.post("/table")
+@router.post("/table", response_model=ValuationTable)
 async def get_table(request: TickerRequest):
 
-    try:
-        responser = ValueResponse(ticker=request.ticker)
-
-        return responser.get_value_table()
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return handle_request(
+        ticker = request.ticker,
+        service_class = ValueResponse,
+        method_name = 'get_value_table',
+        include_content = False
+    )
