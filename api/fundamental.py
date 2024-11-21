@@ -86,28 +86,32 @@ async def get_balance_sheet(request: TickerRequest):
     )
 
 # Revenues
-@router.post("/revenue/monthly")
-async def get_monthly(request: TickerRequest):
+@router.post("/revenue/month_revenue")
+async def get_month_revenue(request: TickerRequest):
     return handle_request(
         request.ticker, 
         RevenStatements, 
-        'get_monthly'
+        'get_month_revenue',
     )
 
-@router.post("/revenue/this_month")
-async def get_this_month(request: TickerRequest):
+@router.post("/revenue/revenue_over_years", response_model=TitleArray)
+async def get_revenue_over_years(request: TickerRequest):
     return handle_request(
         request.ticker, 
         RevenStatements, 
-        'get_this_month'
+        'get_revenue_over_years',
+        include_content=True,
+        content_method_name='get_revenue_over_years_text'
     )
 
-@router.post("/revenue/this_month_text")
-async def get_this_month_text(request: TickerRequest):
+@router.post("/revenue/grand_total_over_years", response_model=TitleArray)
+async def get_grand_total_over_years(request: TickerRequest):
     return handle_request(
         request.ticker, 
         RevenStatements, 
-        'get_this_month_text'
+        'get_grand_total_over_years',
+        include_content=True,
+        content_method_name='get_grand_total_over_years_text'
     )
 
 # BalanceSheet

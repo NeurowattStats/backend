@@ -5,7 +5,6 @@ from database import MongoConnector
 from utils import get_full_fake
 import os
 
-
 class ResponseService:
     """
     Base service class providing common methods and properties for financial data handling.
@@ -47,6 +46,20 @@ class ResponseService:
     def _get_multiple_data(self, data: dict, fields: list) -> dict:
         """Helper method to retrieve multiple fields from seasonal data."""
         return {field: self._get_data(data, field) for field in fields}
+    
+    def _get_title_array_from_full_page(self, full_page:dict, key: str):
+        """
+        通用方法：根據鍵提取資料並轉換為標題數組格式
+        :param key: 欲提取的資料鍵（如 'month_revenue', 'this_month_revenue_over_years', 'grand_total_over_years' 等）
+        :return: TitleArray 實例
+        """
+        data = self._get_data(full_page, key).reset_index()
+        array = ResponseService.df_to_title_array(
+            df=data,
+            index_col='index',
+            empty_values='不適用'
+        )
+        return array
         
     @staticmethod
     def replace_empty_values(data, marker):
@@ -83,7 +96,6 @@ class ResponseService:
             return marker if is_empty(data) else data
         
     @staticmethod
-
     def df_to_title_array(
         df: pd.DataFrame, 
         index_col: str, 

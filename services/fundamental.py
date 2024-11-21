@@ -1,6 +1,7 @@
 # %%
 from neurostats_API.fetchers.finance_overview import FinanceOverviewFetcher
 from neurostats_API.fetchers.balance_sheet import BalanceSheetFetcher
+from neurostats_API.fetchers.month_revenue import MonthRevenueFetcher
 
 from .base import ResponseService
 from models import (
@@ -117,26 +118,50 @@ class RevenStatements(FundResponse):
 
     def __init__(self, ticker: str):
         super().__init__(ticker)
-        self.raw_full_data = self.data_fetcher.get_month_revenue_sheet(ticker)
-        if not self.raw_full_data:
-            raise ValueError("No revenue data available for the given ticker.")
         
-        self.full_data = FundResponse.replace_empty_values(data=self.raw_full_data, marker='不適用')
+        self.data_fetcher = MonthRevenueFetcher(
+            ticker = self.ticker,
+            db_client = self.mongo_clinet
+        )
+        self.full_page = FundResponse.replace_empty_values(
+            data = self.data_fetcher.query_data(),
+            marker = '不適用'
+        )
 
-    def get_monthly(self):
-        return FundResponse._get_data(self.full_data, 'month_revenue')
-    
-    def get_this_month(self):
-        return FundResponse._get_data(self.full_data, 'this_month_revenue_over_years')
+    def get_month_revenue(self):
 
-    def get_this_month_text(self):
-        return 'in process'
+        data = self._get_data(self.full_page, 'month_revenue').reset_index()
+        array = ResponseService.df_to_title_array(
+            df=data,
+            index_col='month',
+            empty_values='不適用'
+        )
+
+        return array
     
-    def get_cumulative(self):
-        return FundResponse._get_data(self.full_data, 'grand_total_over_years')
+    def get_revenue_over_years(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'this_month_revenue_over_years'
+        )
+
+    def get_revenue_over_years_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
     
-    def get_cumulative_text(self):
-        return 'in process'
+    def get_grand_total_over_years(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_over_years'
+        )
+    
+    def get_grand_total_over_years_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
 
 class ProfitLoss(FundResponse):
     
