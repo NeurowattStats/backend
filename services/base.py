@@ -16,17 +16,26 @@ class ResponseService:
         self.mongo_address = os.getenv("MONGO_ADDRESS")
         self.db_connector = MongoConnector(self.mongo_address)
         self.mongo_clinet = MongoClient(os.getenv('MONGO_ADDRESS'))
-        self._load_collection()
         self.datetime_format = '%Y-%m-%d'
         self.full_fake = get_full_fake(path='./docs/fake_data.yaml')
         self.fake_gen = get_full_fake(path='./docs/fake_gen.yaml')
-        self.collection = self._load_collection()
 
-    def _load_collection(self):
+        self.collection = self._load_collection(
+            name = 'company',
+            collection = 'twse_stats'
+        )
+        self.content_collection = self._load_collection(
+            name = 'content_generation',
+            collection = 'stats'
+        )
+
+    def _load_collection(
+            self, 
+            name:str, 
+            collection:str
+        ):
         
-        name = 'company'
-        collection = 'twse_stats'
-        self.collection = self.db_connector.point_collection(
+        return self.db_connector.point_collection(
             name = name,
             collection = collection
         )
@@ -72,3 +81,38 @@ class ResponseService:
                     for x in data}
         else:
             return marker if is_empty(data) else data
+        
+    @staticmethod
+
+    def df_to_title_array(
+        df: pd.DataFrame, 
+        index_col: str, 
+        empty_values: str = '不適用'
+    ) -> list: 
+
+        # 替換空值
+        replaced_df = ResponseService.replace_empty_values(
+            data=df,
+            marker=empty_values
+        )
+
+        # 提取索引列
+        indexes = replaced_df[index_col].tolist()
+
+        # 去除索引列
+        try:
+            non_index_df = replaced_df.drop(index_col, axis=1)
+        except:
+            non_index_df = replaced_df
+
+        result = []
+
+        # 遍歷非索引列
+        for col in non_index_df.columns:
+            title_dict = {'title': col}  # 初始化字典
+            title_dict.update({index: value for index, value in zip(indexes, non_index_df[col])})  # 使用 zip 和 dict 更新字典
+            result.append(title_dict)
+
+        return result
+
+    

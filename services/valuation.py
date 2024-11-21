@@ -1,6 +1,6 @@
 from neurostats_API.fetchers.value_invest import ValueFetcher
 from .base import ResponseService
-from models import ValuationOverview, ValuationTable
+from models import ValuationOverview, TitleArray
 
 
 class ValueResponse(ResponseService):
@@ -19,23 +19,14 @@ class ValueResponse(ResponseService):
 
     def get_value_table(self):
 
-        table_df = ResponseService.replace_empty_values(
-            data = self.yearly_data,
-            marker = '不適用'
+        data = ResponseService.df_to_title_array(
+            df = self.yearly_data,
+            index_col = 'year',
+            empty_values = '不適用'
         )
-    
-        result = []
 
-        for column in table_df.columns[1:]:
-            column_data = {
-                "title": column,
-            }
-            for i, year in enumerate(table_df['year']):
-                column_data[year] = table_df[column].iloc[i]
-            result.append(column_data)
-
-        return ValuationTable(
-            array = result
+        return TitleArray(
+            array = data
         )
 
     def get_value_overview(self):

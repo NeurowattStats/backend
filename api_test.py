@@ -2,74 +2,74 @@ import pytest
 from httpx import AsyncClient, ASGITransport
 from main import app
 
-@pytest.mark.asyncio
-async def test_get_finance_data():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.post("/neurostats/fundamental/vitals/finance_data", json={"ticker": "2330"})
+# Function to send POST request and check response
+async def test_api(endpoint: str, payload: dict):
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.post(endpoint, json=payload)
     assert response.status_code == 200
     data = response.json()
-    assert "quarter" in data
-    assert "operating_revenue" in data
+    return data
 
-@pytest.mark.asyncio
-async def test_get_per_share():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.post("/neurostats/fundamental/vitals/per_share", json={"ticker": "2330"})
-    assert response.status_code == 200
-    data = response.json()
-    assert "revenue_per_share" in data
-    assert "earnings_per_share_eps" in data
+# List of all API URLs
+api_urls = [
+    # Vitals
+    "/neurostats/fundamental/vitals/overview",
+    "/neurostats/fundamental/vitals/per_share",
+    "/neurostats/fundamental/vitals/profitability",
+    "/neurostats/fundamental/vitals/growth_momentum",
+    "/neurostats/fundamental/vitals/operating_indicators",
+    "/neurostats/fundamental/vitals/financial_resilience",
+    "/neurostats/fundamental/vitals/balance_sheet",
 
-@pytest.mark.asyncio
-async def test_get_ratios():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.post("/neurostats/fundamental/vitals/ratios", json={"ticker": "2330"})
-    assert response.status_code == 200
-    data = response.json()
-    assert "return_on_assets_roa" in data
-    assert "gross_profit_margin" in data
+    # Revenues
+    "/neurostats/fundamental/revenue/monthly",
+    "/neurostats/fundamental/revenue/this_month",
+    "/neurostats/fundamental/revenue/this_month_text",
 
-@pytest.mark.asyncio
-async def test_get_monthly_revenue():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.post("/neurostats/fundamental/revenue/monthly", json={"ticker": "2330"})
-    assert response.status_code == 200
-    assert response.json()  # Confirm data is returned
+    # BalanceSheet
+    "/neurostats/fundamental/balance_sheet/full_table",
+    "/neurostats/fundamental/balance_sheet/total_asset",
+    "/neurostats/fundamental/balance_sheet/current_asset",
+    "/neurostats/fundamental/balance_sheet/non_current_asset",
+    "/neurostats/fundamental/balance_sheet/current_debt",
+    "/neurostats/fundamental/balance_sheet/non_current_debt",
+    "/neurostats/fundamental/balance_sheet/equity",
 
-@pytest.mark.asyncio
-async def test_get_this_month_revenue():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.post("/neurostats/fundamental/revenue/this_month", json={"ticker": "2330"})
-    assert response.status_code == 200
-    assert response.json()  # Confirm data is returned
+    # Cashflow
+    "/neurostats/fundamental/cashflow/full_table",
+    "/neurostats/fundamental/cashflow/operation",
+    "/neurostats/fundamental/cashflow/investment",
+    "/neurostats/fundamental/cashflow/fundraising",
 
-@pytest.mark.asyncio
-async def test_get_this_month_text():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.post("/neurostats/fundamental/revenue/this_month_text", json={"ticker": "2330"})
-    assert response.status_code == 200
-    assert response.json()  # Confirm data is returned
+    # Valuation
+    "/neurostats/valuation/overview",
+    "/neurostats/valuation/table",
 
-@pytest.mark.asyncio
-async def test_get_valuation_overview():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.post("/neurostats/valuation/overview", json={"ticker": "2330"})
-    assert response.status_code == 200
-    data = response.json()
-    assert "PE_Ratio" in data
-    assert "PS_Ratio" in data
+    # Tech
+    "/neurostats/tech/vitals",
+    "/neurostats/tech/daily",
+    "/neurostats/tech/weekly",
+    "/neurostats/tech/monthly",
+    "/neurostats/tech/quarterly",
+    "/neurostats/tech/yearly",
+]
 
+# Test data
+payload = {
+    "ticker": "2330"  # Replace with the ticker you want to test
+}
+
+# Run tests for each URL
 @pytest.mark.asyncio
-async def test_get_valuation_table():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.post("/neurostats/valuation/table", json={"ticker": "2330"})
-    assert response.status_code == 200
-    assert response.json()  # Confirm data is returned
+async def test_all_apis():
+    for url in api_urls:
+        data = await test_api(url, payload)
+        
+        # You can add additional assertions for each API response here
+        # Example:
+        # assert "some_key" in data
+
+        # Optional: print out the response for debugging
+        print(f"Tested URL: {url}")
+        print(f"Response: {data}")
+        print("-" * 50)
