@@ -8,7 +8,8 @@ from models import (
     GrowthMomentumModel, 
     FinancialResilienceModel, 
     BalanceSheetModel,
-    OperatingIndicatorsModel
+    OperatingIndicatorsModel,
+    TitleArray
 )
 
 from services import (
@@ -118,58 +119,64 @@ async def get_balance_sheet_full_table(request: TickerRequest):
         'get_full_table'
     )
 
-@router.post("/balance_sheet/total_asset")
+@router.post("/balance_sheet/total_asset", response_model=TitleArray)
 async def get_total_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_total_asset', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_total_asset_text'
     )
 
-@router.post("/balance_sheet/current_asset")
+@router.post("/balance_sheet/current_asset", response_model=TitleArray)
 async def get_current_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_current_asset', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_current_asset_text'
     )
 
-@router.post("/balance_sheet/non_current_asset")
+@router.post("/balance_sheet/non_current_asset", response_model=TitleArray)
 async def get_non_current_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_non_current_asset', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_non_current_asset_text'
     )
 
-@router.post("/balance_sheet/current_debt")
+@router.post("/balance_sheet/current_debt", response_model=TitleArray)
 async def get_current_debt(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_current_debt', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_current_debt_text'
     )
 
-@router.post("/balance_sheet/non_current_debt")
+@router.post("/balance_sheet/non_current_debt", response_model=TitleArray)
 async def get_non_current_debt(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_non_current_debt', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_non_current_debt_text'
     )
 
-@router.post("/balance_sheet/equity")
+@router.post("/balance_sheet/equity", response_model=TitleArray)
 async def get_equity(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_equity', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_equity_text'
     )
 
 # Cashflow

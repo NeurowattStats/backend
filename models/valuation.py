@@ -10,7 +10,3 @@ class ValuationOverview(BaseModel):
     EV_EBIT: Optional[Union[float, str]]  # Enterprise Value-to-EBIT
     EV_EBITDA: Optional[Union[float, str]]  # Enterprise Value-to-EBITDA
     EV_S: Optional[Union[float, str]]  # Enterprise Value-to-Sales
-
-
-class ValuationTable(BaseModel):
-    array: List[Dict[Union[float, str], Union[float, str]]]
