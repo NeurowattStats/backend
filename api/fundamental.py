@@ -192,29 +192,32 @@ async def get_cashflow_full_table(request: TickerRequest):
         'get_full_table'
     )
 
-@router.post("/cashflow/operation")
+@router.post("/cashflow/operation", response_model=TitleArray)
 async def get_operation(request: TickerRequest):
     return handle_request(
         request.ticker, 
         CashflowSheet, 
         'get_operation', 
-        include_content=True
+        include_content=True,
+        content_method_name = 'get_operation_text'
     )
 
-@router.post("/cashflow/investment")
+@router.post("/cashflow/investment", response_model=TitleArray)
 async def get_investment(request: TickerRequest):
     return handle_request(
         request.ticker, 
         CashflowSheet, 
         'get_investment', 
-        include_content=True
+        include_content=True,
+        content_method_name = 'get_investment_text'
     )
 
-@router.post("/cashflow/fundraising")
+@router.post("/cashflow/fundraising", response_model=TitleArray)
 async def get_fundraising(request: TickerRequest):
     return handle_request(
         request.ticker, 
         CashflowSheet, 
         'get_fundraising', 
-        include_content=True
+        include_content=True,
+        content_method_name = 'get_fundraising_text'
     )

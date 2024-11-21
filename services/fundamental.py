@@ -2,6 +2,7 @@
 from neurostats_API.fetchers.finance_overview import FinanceOverviewFetcher
 from neurostats_API.fetchers.balance_sheet import BalanceSheetFetcher
 from neurostats_API.fetchers.month_revenue import MonthRevenueFetcher
+from neurostats_API.fetchers.cash_flow import CashFlowFetcher
 
 from .base import ResponseService
 from models import (
@@ -262,29 +263,57 @@ class CashflowSheet(FundResponse):
 
     def __init__(self, ticker):
         super().__init__(ticker)
-        self.raw_full_data = self.data_fetcher.get_cash_flow(ticker)
-        self.full_data = FundResponse.replace_empty_values(data=self.raw_full_data, marker='不適用')
+
+        self.data_fetcher = CashFlowFetcher(
+            ticker = self.ticker,
+            db_client = self.mongo_clinet
+        )
+        self.full_page = FundResponse.replace_empty_values(
+            data = self.data_fetcher.query_data(),
+            marker = '不適用'
+        )
 
     def get_full_table(self):
-        return FundResponse._get_data(self.full_data, 'cash_flow')
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key='cash_flow'
+        )
     
     def get_operation(self):
-        return FundResponse._get_data(self.full_data, 'CASHO')
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key='CASHO'
+        )
     
     def get_operation_text(self):
-        return 'in process'
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
     
     def get_investment(self):
-        return FundResponse._get_data(self.full_data,'CASHI')
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key='CASHI'
+        )
     
     def get_investment_text(self):
-        return 'in process'
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
     
     def get_fundraising(self):
-        return FundResponse._get_data(self.full_data, 'CASHF')
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key='CASHF'
+        )
     
     def get_fundraising_text(self):
-        return 'in process'
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
 
 class Dividend(FundResponse):
 
