@@ -4,3 +4,5 @@ __pycache__/
 utils/NeuroStats_API/
 docker-compose.yml
 test.py
+.pytest_cache/
+full_test.py

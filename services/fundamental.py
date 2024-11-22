@@ -1,5 +1,9 @@
 # %%
 from neurostats_API.fetchers.finance_overview import FinanceOverviewFetcher
+from neurostats_API.fetchers.balance_sheet import BalanceSheetFetcher
+from neurostats_API.fetchers.month_revenue import MonthRevenueFetcher
+from neurostats_API.fetchers.cash_flow import CashFlowFetcher
+
 from .base import ResponseService
 from models import (
     OverviewModel, 
@@ -8,7 +12,8 @@ from models import (
     GrowthMomentumModel, 
     FinancialResilienceModel, 
     BalanceSheetModel,
-    OperatingIndicatorsModel
+    OperatingIndicatorsModel,
+    TitleArray
 )
  
 # %%
@@ -114,26 +119,50 @@ class RevenStatements(FundResponse):
 
     def __init__(self, ticker: str):
         super().__init__(ticker)
-        self.raw_full_data = self.data_fetcher.get_month_revenue_sheet(ticker)
-        if not self.raw_full_data:
-            raise ValueError("No revenue data available for the given ticker.")
         
-        self.full_data = FundResponse.replace_empty_values(data=self.raw_full_data, marker='不適用')
+        self.data_fetcher = MonthRevenueFetcher(
+            ticker = self.ticker,
+            db_client = self.mongo_clinet
+        )
+        self.full_page = FundResponse.replace_empty_values(
+            data = self.data_fetcher.query_data(),
+            marker = '不適用'
+        )
 
-    def get_monthly(self):
-        return FundResponse._get_data(self.full_data, 'month_revenue')
-    
-    def get_this_month(self):
-        return FundResponse._get_data(self.full_data, 'this_month_revenue_over_years')
+    def get_month_revenue(self):
 
-    def get_this_month_text(self):
-        return 'in process'
+        data = self._get_data(self.full_page, 'month_revenue').reset_index()
+        array = ResponseService.df_to_title_array(
+            df=data,
+            index_col='month',
+            empty_values='不適用'
+        )
+
+        return array
     
-    def get_cumulative(self):
-        return FundResponse._get_data(self.full_data, 'grand_total_over_years')
+    def get_revenue_over_years(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'this_month_revenue_over_years'
+        )
+
+    def get_revenue_over_years_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
     
-    def get_cumulative_text(self):
-        return 'in process'
+    def get_grand_total_over_years(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_over_years'
+        )
+    
+    def get_grand_total_over_years_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
 
 class ProfitLoss(FundResponse):
     
@@ -141,78 +170,150 @@ class ProfitLoss(FundResponse):
         super().__init__(ticker)
 
 class BalanceSheet(FundResponse):
-
+    
     def __init__(self, ticker: str):
         super().__init__(ticker)
-        self.raw_full_data = self.data_fetcher.get_balance_sheet(ticker)
-        self.full_data = FundResponse.replace_empty_values(data=self.raw_full_data, marker='不適用')
-    
+
+        # 初始化數據抓取器
+        self.data_fetcher = BalanceSheetFetcher(
+            ticker=self.ticker,
+            db_client=self.mongo_clinet
+        )
+
+        # 獲取完整的資產負債表並處理空值
+        self.full_page = FundResponse.replace_empty_values(
+            data=self.data_fetcher.query_data(),
+            marker='不適用'
+        )
+
+    def _get_and_format_data(self, key: str):
+        """
+        通用方法：根據鍵提取資料並轉換為標題數組格式
+        :param key: 欲提取的資料鍵（如 'balance_sheet', 'total_asset', 'current_asset' 等）
+        :return: TitleArray 實例
+        """
+        data = self._get_data(self.full_page, key).reset_index()
+        array = FundResponse.df_to_title_array(
+            df=data,
+            index_col='index',
+            empty_values='不適用'
+        )
+        return array
+
     def get_full_table(self):
-        return FundResponse._get_data(self.full_data, 'balance_sheet')
-    
+        return self._get_and_format_data('balance_sheet')
+
     def get_total_asset(self):
-        return FundResponse._get_data(self.full_data, 'total_asset')
-    
-    def get_total_asset_text(self):
-        return 'in process'
-    
+        return self._get_and_format_data('total_asset')
+
     def get_current_asset(self):
-        return FundResponse._get_data(self.full_data, 'current_asset')
-    
-    def get_current_asset_text(self):
-        return 'in process'
+        return self._get_and_format_data('current_asset')
 
     def get_non_current_asset(self):
-        return FundResponse._get_data(self.full_data, 'non_current_asset')
-    
-    def get_non_current_asset_text(self):
-        return 'in process'
-    
-    def get_current_debt(self):
-        return FundResponse._get_data(self.full_data, 'current_debt')
-    
-    def get_current_debt_text(self):
-        return 'in process'
-       
-    def get_non_current_debt(self):
-        return FundResponse._get_data(self.full_data, 'non_current_debt')
+        return self._get_and_format_data('non_current_asset')
 
-    def get_non_current_debt_text(self):
-        return 'in process'   
+    def get_current_debt(self):
+        return self._get_and_format_data('current_debt')
+
+    def get_non_current_debt(self):
+        return self._get_and_format_data('non_current_debt')
 
     def get_equity(self):
-        return FundResponse._get_data(self.full_data, 'equity')
+        return self._get_and_format_data('equity')
+
+    # 以下是 text 方法部分：
+
+    def get_total_asset_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
     
+    def get_current_asset_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
+
+    def get_non_current_asset_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
+
+    def get_current_debt_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
+    
+    def get_non_current_debt_text(self):
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
+
     def get_equity_text(self):
-        return 'in process'   
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
 
 class CashflowSheet(FundResponse):
 
     def __init__(self, ticker):
         super().__init__(ticker)
-        self.raw_full_data = self.data_fetcher.get_cash_flow(ticker)
-        self.full_data = FundResponse.replace_empty_values(data=self.raw_full_data, marker='不適用')
+
+        self.data_fetcher = CashFlowFetcher(
+            ticker = self.ticker,
+            db_client = self.mongo_clinet
+        )
+        self.full_page = FundResponse.replace_empty_values(
+            data = self.data_fetcher.query_data(),
+            marker = '不適用'
+        )
 
     def get_full_table(self):
-        return FundResponse._get_data(self.full_data, 'cash_flow')
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key='cash_flow'
+        )
     
     def get_operation(self):
-        return FundResponse._get_data(self.full_data, 'CASHO')
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key='CASHO'
+        )
     
     def get_operation_text(self):
-        return 'in process'
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
     
     def get_investment(self):
-        return FundResponse._get_data(self.full_data,'CASHI')
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key='CASHI'
+        )
     
     def get_investment_text(self):
-        return 'in process'
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
     
     def get_fundraising(self):
-        return FundResponse._get_data(self.full_data, 'CASHF')
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key='CASHF'
+        )
     
     def get_fundraising_text(self):
-        return 'in process'
+        return {
+            'content_des1':'in process',
+            'content_des2':'in process',
+        }
 
 class Dividend(FundResponse):
 

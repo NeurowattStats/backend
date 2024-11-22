@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from models import ValuationOverview, TickerRequest, ValuationTable
+from models import ValuationOverview, TickerRequest, TitleArray
 from services import ValueResponse
 
 from utils import handle_request
@@ -18,7 +18,7 @@ async def get_overview(request: TickerRequest):
         include_content = False
     )
     
-@router.post("/table", response_model=ValuationTable)
+@router.post("/table", response_model=TitleArray)
 async def get_table(request: TickerRequest):
 
     return handle_request(

@@ -8,7 +8,8 @@ from models import (
     GrowthMomentumModel, 
     FinancialResilienceModel, 
     BalanceSheetModel,
-    OperatingIndicatorsModel
+    OperatingIndicatorsModel,
+    TitleArray
 )
 
 from services import (
@@ -85,28 +86,32 @@ async def get_balance_sheet(request: TickerRequest):
     )
 
 # Revenues
-@router.post("/revenue/monthly")
-async def get_monthly(request: TickerRequest):
+@router.post("/revenue/month_revenue")
+async def get_month_revenue(request: TickerRequest):
     return handle_request(
         request.ticker, 
         RevenStatements, 
-        'get_monthly'
+        'get_month_revenue',
     )
 
-@router.post("/revenue/this_month")
-async def get_this_month(request: TickerRequest):
+@router.post("/revenue/revenue_over_years", response_model=TitleArray)
+async def get_revenue_over_years(request: TickerRequest):
     return handle_request(
         request.ticker, 
         RevenStatements, 
-        'get_this_month'
+        'get_revenue_over_years',
+        include_content=True,
+        content_method_name='get_revenue_over_years_text'
     )
 
-@router.post("/revenue/this_month_text")
-async def get_this_month_text(request: TickerRequest):
+@router.post("/revenue/grand_total_over_years", response_model=TitleArray)
+async def get_grand_total_over_years(request: TickerRequest):
     return handle_request(
         request.ticker, 
         RevenStatements, 
-        'get_this_month_text'
+        'get_grand_total_over_years',
+        include_content=True,
+        content_method_name='get_grand_total_over_years_text'
     )
 
 # BalanceSheet
@@ -118,58 +123,64 @@ async def get_balance_sheet_full_table(request: TickerRequest):
         'get_full_table'
     )
 
-@router.post("/balance_sheet/total_asset")
+@router.post("/balance_sheet/total_asset", response_model=TitleArray)
 async def get_total_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_total_asset', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_total_asset_text'
     )
 
-@router.post("/balance_sheet/current_asset")
+@router.post("/balance_sheet/current_asset", response_model=TitleArray)
 async def get_current_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_current_asset', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_current_asset_text'
     )
 
-@router.post("/balance_sheet/non_current_asset")
+@router.post("/balance_sheet/non_current_asset", response_model=TitleArray)
 async def get_non_current_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_non_current_asset', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_non_current_asset_text'
     )
 
-@router.post("/balance_sheet/current_debt")
+@router.post("/balance_sheet/current_debt", response_model=TitleArray)
 async def get_current_debt(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_current_debt', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_current_debt_text'
     )
 
-@router.post("/balance_sheet/non_current_debt")
+@router.post("/balance_sheet/non_current_debt", response_model=TitleArray)
 async def get_non_current_debt(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_non_current_debt', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_non_current_debt_text'
     )
 
-@router.post("/balance_sheet/equity")
+@router.post("/balance_sheet/equity", response_model=TitleArray)
 async def get_equity(request: TickerRequest):
     return handle_request(
         request.ticker, 
         BalanceSheet, 
         'get_equity', 
-        include_content=True
+        include_content=True,
+        content_method_name='get_equity_text'
     )
 
 # Cashflow
@@ -181,29 +192,32 @@ async def get_cashflow_full_table(request: TickerRequest):
         'get_full_table'
     )
 
-@router.post("/cashflow/operation")
+@router.post("/cashflow/operation", response_model=TitleArray)
 async def get_operation(request: TickerRequest):
     return handle_request(
         request.ticker, 
         CashflowSheet, 
         'get_operation', 
-        include_content=True
+        include_content=True,
+        content_method_name = 'get_operation_text'
     )
 
-@router.post("/cashflow/investment")
+@router.post("/cashflow/investment", response_model=TitleArray)
 async def get_investment(request: TickerRequest):
     return handle_request(
         request.ticker, 
         CashflowSheet, 
         'get_investment', 
-        include_content=True
+        include_content=True,
+        content_method_name = 'get_investment_text'
     )
 
-@router.post("/cashflow/fundraising")
+@router.post("/cashflow/fundraising", response_model=TitleArray)
 async def get_fundraising(request: TickerRequest):
     return handle_request(
         request.ticker, 
         CashflowSheet, 
         'get_fundraising', 
-        include_content=True
+        include_content=True,
+        content_method_name = 'get_fundraising_text'
     )

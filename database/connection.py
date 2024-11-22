@@ -19,4 +19,6 @@ class MongoConnector(DatabaseConnector):
         self.db = self.client[name]
         self.collection = self.db[collection]
 
+        return self.db[collection]
+
     
