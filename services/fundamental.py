@@ -147,10 +147,7 @@ class RevenStatements(FundResponse):
         )
 
     def get_revenue_over_years_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='revenue_over_years')
     
     def get_grand_total_over_years(self):
         return self._get_title_array_from_full_page(
@@ -159,10 +156,7 @@ class RevenStatements(FundResponse):
         )
     
     def get_grand_total_over_years_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='grand_total_over_years')
 
 class ProfitLoss(FundResponse):
     
@@ -224,40 +218,22 @@ class BalanceSheet(FundResponse):
     # 以下是 text 方法部分：
 
     def get_total_asset_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='total_asset')
     
     def get_current_asset_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='current_asset')
 
     def get_non_current_asset_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='non_current_asset')
 
     def get_current_debt_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='current_debt')
     
     def get_non_current_debt_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='non_current_debt')
 
     def get_equity_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='equity')
 
 class CashflowSheet(FundResponse):
 
@@ -286,10 +262,7 @@ class CashflowSheet(FundResponse):
         )
     
     def get_operation_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='operation')
     
     def get_investment(self):
         return self._get_title_array_from_full_page(
@@ -298,10 +271,7 @@ class CashflowSheet(FundResponse):
         )
     
     def get_investment_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='investment')
     
     def get_fundraising(self):
         return self._get_title_array_from_full_page(
@@ -310,10 +280,7 @@ class CashflowSheet(FundResponse):
         )
     
     def get_fundraising_text(self):
-        return {
-            'content_des1':'in process',
-            'content_des2':'in process',
-        }
+        return self.get_latest_generation(category='fundraising')
 
 class Dividend(FundResponse):
 

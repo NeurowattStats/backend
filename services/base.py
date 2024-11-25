@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
-from database import MongoConnector
+from database import MongoConnector, MongoHelper
 from utils import get_full_fake
 import os
 
@@ -15,6 +15,7 @@ class ResponseService:
         self.mongo_address = os.getenv("MONGO_ADDRESS")
         self.db_connector = MongoConnector(self.mongo_address)
         self.mongo_clinet = MongoClient(os.getenv('MONGO_ADDRESS'))
+        self.query_helper = MongoHelper()
         self.datetime_format = '%Y-%m-%d'
         self.full_fake = get_full_fake(path='./docs/fake_data.yaml')
         self.fake_gen = get_full_fake(path='./docs/fake_gen.yaml')
@@ -60,7 +61,30 @@ class ResponseService:
             empty_values='不適用'
         )
         return array
-        
+    
+    def get_latest_generation(self, category: str) -> str:
+        """
+        查詢最新的指定 category 的 generation。
+
+        :param category: 要查詢的 category
+        :return: 最新的 generation 或 '不適用' (如未找到)
+        """
+        try:
+            result = self.query_helper.find_the_lastest(
+                collection=self.content_collection,  # 修正為 content_collection
+                query={"category": category}
+            )
+            
+            if result:
+                return result.get("generation", "不適用")  # 如果 generation 缺失，返回默認值
+            else:
+                print(f"No document found for category: {category}")
+                return "不適用"  # 未找到匹配的文檔
+            
+        except Exception as e:
+            print(f"Error fetching latest generation for category {category}: {e}")
+            return "不適用"  # 出現錯誤時返回默認值
+            
     @staticmethod
     def replace_empty_values(data, marker):
         """
