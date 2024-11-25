@@ -122,7 +122,7 @@ class ResponseService:
         # 遍歷非索引列
         for col in non_index_df.columns:
             title_dict = {'title': col}  # 初始化字典
-            title_dict.update({index: value for index, value in zip(indexes, non_index_df[col])})  # 使用 zip 和 dict 更新字典
+            title_dict.update({f'{index}': f'{value}' for index, value in zip(indexes, non_index_df[col])})  # 使用 zip 和 dict 更新字典
             result.append(title_dict)
 
         return result
