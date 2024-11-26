@@ -33,7 +33,7 @@ app.include_router(valuation_router, prefix="/neurostats/valuation", tags=["Valu
 app.include_router(tech_router, prefix="/neurostats/tech", tags=["Tech"])  # 新增的路由
 
 # 包含 tech 的路由
-app.include_router(tech_router, prefix="/neurostats/fundamental/profit_loss", tags=["ProfitAndLoss"])  # 新增的路由
+app.include_router(profit_loss_router, prefix="/neurostats/fundamental/profit_loss", tags=["ProfitAndLoss"])  # 新增的路由
 
 # 啟動應用
 if __name__ == "__main__":
