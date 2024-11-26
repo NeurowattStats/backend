@@ -94,7 +94,7 @@ async def get_month_revenue(request: TickerRequest):
         'get_month_revenue',
     )
 
-@router.post("/revenue/revenue_over_years", response_model=TitleArray)
+@router.post("/revenue/revenue_over_years")
 async def get_revenue_over_years(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -104,7 +104,7 @@ async def get_revenue_over_years(request: TickerRequest):
         content_method_name='get_revenue_over_years_text'
     )
 
-@router.post("/revenue/grand_total_over_years", response_model=TitleArray)
+@router.post("/revenue/grand_total_over_years")
 async def get_grand_total_over_years(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -123,7 +123,7 @@ async def get_balance_sheet_full_table(request: TickerRequest):
         'get_full_table'
     )
 
-@router.post("/balance_sheet/total_asset", response_model=TitleArray)
+@router.post("/balance_sheet/total_asset")
 async def get_total_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -133,7 +133,7 @@ async def get_total_asset(request: TickerRequest):
         content_method_name='get_total_asset_text'
     )
 
-@router.post("/balance_sheet/current_asset", response_model=TitleArray)
+@router.post("/balance_sheet/current_asset")
 async def get_current_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -143,7 +143,7 @@ async def get_current_asset(request: TickerRequest):
         content_method_name='get_current_asset_text'
     )
 
-@router.post("/balance_sheet/non_current_asset", response_model=TitleArray)
+@router.post("/balance_sheet/non_current_asset")
 async def get_non_current_asset(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -153,7 +153,7 @@ async def get_non_current_asset(request: TickerRequest):
         content_method_name='get_non_current_asset_text'
     )
 
-@router.post("/balance_sheet/current_debt", response_model=TitleArray)
+@router.post("/balance_sheet/current_debt")
 async def get_current_debt(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -163,7 +163,7 @@ async def get_current_debt(request: TickerRequest):
         content_method_name='get_current_debt_text'
     )
 
-@router.post("/balance_sheet/non_current_debt", response_model=TitleArray)
+@router.post("/balance_sheet/non_current_debt")
 async def get_non_current_debt(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -173,7 +173,7 @@ async def get_non_current_debt(request: TickerRequest):
         content_method_name='get_non_current_debt_text'
     )
 
-@router.post("/balance_sheet/equity", response_model=TitleArray)
+@router.post("/balance_sheet/equity")
 async def get_equity(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -192,7 +192,7 @@ async def get_cashflow_full_table(request: TickerRequest):
         'get_full_table'
     )
 
-@router.post("/cashflow/operation", response_model=TitleArray)
+@router.post("/cashflow/operation")
 async def get_operation(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -202,7 +202,7 @@ async def get_operation(request: TickerRequest):
         content_method_name = 'get_operation_text'
     )
 
-@router.post("/cashflow/investment", response_model=TitleArray)
+@router.post("/cashflow/investment")
 async def get_investment(request: TickerRequest):
     return handle_request(
         request.ticker, 
@@ -212,7 +212,7 @@ async def get_investment(request: TickerRequest):
         content_method_name = 'get_investment_text'
     )
 
-@router.post("/cashflow/fundraising", response_model=TitleArray)
+@router.post("/cashflow/fundraising")
 async def get_fundraising(request: TickerRequest):
     return handle_request(
         request.ticker, 
