@@ -206,3 +206,38 @@ class ResponseService:
             else:
                 formatted_data[key] = value
         return ResponseService.format_dict_values(formatted_data)
+    
+    @staticmethod
+    def format_values_within_range_to_percentage(
+        data: dict, 
+        keys: list = None, 
+        upper_limit: float = 1.0, 
+        lower_limit: float = -1.0, 
+        decimal_places: int = 2
+    ) -> dict:
+        """
+        将字典中指定范围 (lower_limit, upper_limit] 内的数值转换为百分比格式。
+
+        :param data: 包含数据的字典
+        :param keys: 需要转换的 key 列表，默认为 None。如果为 None，则处理整个字典。
+        :param upper_limit: 上限（包含），默认为 1.0,。
+        :param lower_limit: 下限（不包含），默认为 -1.0。
+        :param decimal_places: 小数点位数，默认 2。
+        :return: 转换后的字典。
+        """
+        formatted_data = {}
+
+        # 如果 keys 为 None，处理整个字典
+        keys_to_process = keys if keys is not None else data.keys()
+
+        for key, value in data.items():
+            if key in keys_to_process and isinstance(value, (float, int)):
+                # 如果值在范围内，转换为百分比
+                if lower_limit < value <= upper_limit:
+                    formatted_data[key] = ResponseService.float_to_percentage(value, decimal_places)
+                else:
+                    formatted_data[key] = value  # 不在范围内的值保持不变
+            else:
+                formatted_data[key] = value  # 非指定 key 或非数值保持不变
+
+        return ResponseService.format_dict_values(formatted_data)
