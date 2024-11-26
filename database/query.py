@@ -10,20 +10,16 @@ class MongoHelper(QueryHelper):
 
     @staticmethod
     def find_the_lastest(
-            collection: collection.Collection, 
-            query: dict, 
-            projection: dict = None
-        ):
-        # 如果有指定 projection, 使用 projection，否則不指定
-        if projection:
-            latest_doc = collection.find(query, projection).sort('_id', -1).limit(1)
-        else:
-            latest_doc = collection.find(query).sort('_id', -1).limit(1)
-        
-        # 使用 next() 之前檢查是否有結果返回
-        latest_doc = latest_doc.try_next()
-
-        if latest_doc:
-            return latest_doc
-        else:
-            return None  # 或者根據需求處理找不到資料的情況
+        collection: collection.Collection,
+        query: dict,
+        projection: dict = None
+    ):
+        try:
+            cursor = collection.find(query, projection).sort('_id', -1).limit(1)
+            latest_doc = list(cursor)  # 將游標轉換為列表
+            if latest_doc:
+                return latest_doc[0]  # 返回第一個文檔
+            return None  # 如果未找到文檔
+        except Exception as e:
+            print(f"Error finding the latest document: {e}")
+            return None
