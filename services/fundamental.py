@@ -65,7 +65,7 @@ class FundVitals(FundResponse):
             'revenue_per_share', 'gross_per_share', 'operating_income_per_share',
             'eps', 'operating_cash_flow_per_share', 'fcf_per_share'
         ]
-        per_share = self._get_multiple_data(per_share_fields)
+        per_share = FundResponse.format_dict_values(self._get_multiple_data(per_share_fields))
         return PerShareModel(year=self.year, season=self.season, **per_share)
 
     def get_profitability(self) -> ProfitabilityModel:
@@ -74,7 +74,15 @@ class FundVitals(FundResponse):
             'roa', 'roe', 'gross_over_asset', 'roce', 'gross_profit_margin',
             'operation_profit_rate', 'net_income_rate', 'operating_cash_flow_profit_rate'
         ]
-        profitability = self._get_multiple_data(profitability_fields)
+        profitability_raw = self._get_multiple_data(profitability_fields)
+
+        convert_keys = profitability_fields
+        
+        profitability = FundResponse.format_value_to_percentage(
+            data = profitability_raw,
+            keys = convert_keys,
+            decimal_places = 2
+        )
         return ProfitabilityModel(year=self.year, season=self.season, **profitability)
 
     def get_growth_momentum(self) -> GrowthMomentumModel:
@@ -83,7 +91,16 @@ class FundVitals(FundResponse):
             'revenue_YoY', 'gross_prof_YoY', 'operating_income_YoY', 'net_income_YoY',
             'operating_cash_flow_YoY', 'operating_cash_flow_per_share_YoY'
         ]
-        growth_momentum = self._get_multiple_data(growth_momentum_fields)
+        growth_momentum_raw = self._get_multiple_data(growth_momentum_fields)
+
+        convert_keys = growth_momentum_fields
+        
+        growth_momentum = FundResponse.format_value_to_percentage(
+            data = growth_momentum_raw,
+            keys = convert_keys,
+            decimal_places = 2
+        )
+
         return GrowthMomentumModel(year=self.year, season=self.season, **growth_momentum)
 
     def get_operating_indicators(self) -> OperatingIndicatorsModel:
@@ -92,7 +109,19 @@ class FundVitals(FundResponse):
             'dso', 'account_receive_over_revenue', 'dio', 'inventories_revenue_ratio',
             'dpo', 'cash_of_conversion_cycle', 'asset_turnover', 'applcation_turnover'
         ]
-        operating_indicators = self._get_multiple_data(operating_indicators_fields)
+        operating_indicators_raw = self._get_multiple_data(operating_indicators_fields)
+
+        convert_keys =  [
+            'account_receive_over_revenue',  'inventories_revenue_ratio',
+            'asset_turnover', 'applcation_turnover'
+        ]
+
+        operating_indicators = FundResponse.format_value_to_percentage(
+            data = operating_indicators_raw,
+            keys = convert_keys,
+            decimal_places = 2
+        )
+
         return OperatingIndicatorsModel(year=self.year, season=self.season, **operating_indicators)
 
     def get_financial_resilience(self) -> FinancialResilienceModel:
@@ -102,7 +131,19 @@ class FundVitals(FundResponse):
             'net_debt_to_equity_ratio', 'interest_coverage_ratio', 'debt_to_operating_cash_flow',
             'debt_to_free_cash_flow', 'cash_flow_ratio'
         ]
-        financial_resilience = self._get_multiple_data(financial_resilience_fields)
+        financial_resilience_raw = self._get_multiple_data(financial_resilience_fields)
+
+        convert_keys = [
+            'current_ratio', 'quick_ratio', 'debt_to_equity_ratio', 
+            'net_debt_to_equity_ratio', 'interest_coverage_ratio', 'cash_flow_ratio'
+        ]
+
+        financial_resilience = FundResponse.format_value_to_percentage(
+            data = financial_resilience_raw,
+            keys = convert_keys,
+            decimal_places = 2
+        )
+
         return FinancialResilienceModel(year=self.year, season=self.season, **financial_resilience)
 
     def get_balance_sheet(self) -> BalanceSheetModel:
