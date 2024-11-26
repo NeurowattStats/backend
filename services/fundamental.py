@@ -122,6 +122,11 @@ class FundVitals(FundResponse):
             decimal_places = 2
         )
 
+        operating_indicators = FundResponse.format_dict_values(
+            operating_indicators,
+            2
+        )
+
         return OperatingIndicatorsModel(year=self.year, season=self.season, **operating_indicators)
 
     def get_financial_resilience(self) -> FinancialResilienceModel:
@@ -142,6 +147,11 @@ class FundVitals(FundResponse):
             data = financial_resilience_raw,
             keys = convert_keys,
             decimal_places = 2
+        )
+
+        financial_resilience = FundResponse.format_dict_values(
+            financial_resilience,
+            2
         )
 
         return FinancialResilienceModel(year=self.year, season=self.season, **financial_resilience)
@@ -182,6 +192,7 @@ class RevenStatements(FundResponse):
         return array
     
     def get_revenue_over_years(self):
+        
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
             key = 'this_month_revenue_over_years'
