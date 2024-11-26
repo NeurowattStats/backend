@@ -100,7 +100,7 @@ async def get_revenue_over_years(request: TickerRequest):
         request.ticker, 
         RevenStatements, 
         'get_revenue_over_years',
-        include_content=True,
+        include_content=request.include_content,
         content_method_name='get_revenue_over_years_text'
     )
 
@@ -110,7 +110,7 @@ async def get_grand_total_over_years(request: TickerRequest):
         request.ticker, 
         RevenStatements, 
         'get_grand_total_over_years',
-        include_content=True,
+        include_content=request.include_content,
         content_method_name='get_grand_total_over_years_text'
     )
 
@@ -129,7 +129,7 @@ async def get_total_asset(request: TickerRequest):
         request.ticker, 
         BalanceSheet, 
         'get_total_asset', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name='get_total_asset_text'
     )
 
@@ -139,7 +139,7 @@ async def get_current_asset(request: TickerRequest):
         request.ticker, 
         BalanceSheet, 
         'get_current_asset', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name='get_current_asset_text'
     )
 
@@ -149,7 +149,7 @@ async def get_non_current_asset(request: TickerRequest):
         request.ticker, 
         BalanceSheet, 
         'get_non_current_asset', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name='get_non_current_asset_text'
     )
 
@@ -159,7 +159,7 @@ async def get_current_debt(request: TickerRequest):
         request.ticker, 
         BalanceSheet, 
         'get_current_debt', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name='get_current_debt_text'
     )
 
@@ -169,7 +169,7 @@ async def get_non_current_debt(request: TickerRequest):
         request.ticker, 
         BalanceSheet, 
         'get_non_current_debt', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name='get_non_current_debt_text'
     )
 
@@ -179,7 +179,7 @@ async def get_equity(request: TickerRequest):
         request.ticker, 
         BalanceSheet, 
         'get_equity', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name='get_equity_text'
     )
 
@@ -198,7 +198,7 @@ async def get_operation(request: TickerRequest):
         request.ticker, 
         CashflowSheet, 
         'get_operation', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name = 'get_operation_text'
     )
 
@@ -208,7 +208,7 @@ async def get_investment(request: TickerRequest):
         request.ticker, 
         CashflowSheet, 
         'get_investment', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name = 'get_investment_text'
     )
 
@@ -218,6 +218,6 @@ async def get_fundraising(request: TickerRequest):
         request.ticker, 
         CashflowSheet, 
         'get_fundraising', 
-        include_content=True,
+        include_content=request.include_content,
         content_method_name = 'get_fundraising_text'
     )
