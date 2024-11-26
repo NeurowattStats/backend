@@ -1,8 +1,11 @@
 # %%
-from neurostats_API.fetchers.finance_overview import FinanceOverviewFetcher
-from neurostats_API.fetchers.balance_sheet import BalanceSheetFetcher
-from neurostats_API.fetchers.month_revenue import MonthRevenueFetcher
-from neurostats_API.fetchers.cash_flow import CashFlowFetcher
+from neurostats_API.fetchers import (
+    ProfitLoseFetcher,
+    FinanceOverviewFetcher,
+    BalanceSheetFetcher,
+    MonthRevenueFetcher,
+    CashFlowFetcher,
+)
 
 from .base import ResponseService
 from models import (
@@ -215,6 +218,233 @@ class ProfitLoss(FundResponse):
     def __init__(self, ticker: str):
         super().__init__(ticker)
 
+        self.data_fetcher = ProfitLoseFetcher(
+            ticker = self.ticker,
+            db_client = self.mongo_clinet
+        )
+
+        self.full_page_raw = FundResponse.replace_empty_values(
+            data = self.data_fetcher.query_data(),
+            marker = '不適用'
+        )
+
+        self.full_page = FundResponse.format_values_within_range_to_percentage(
+            data = self.full_page_raw,
+            keys = list(self.full_page_raw.keys())[2:],
+        )
+
+    # Data 
+    def get_profit_lose(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'profit_lose'
+        )
+    
+    def get_grand_total_profit_lose(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_profit_lose'
+        )
+
+    def get_revenue(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'revenue'
+        )
+
+    def get_grand_total_revenue(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_revenue'
+        )
+    
+    def get_gross_profit(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'gross_profit'
+        )
+
+    def get_grand_total_gross_profit(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_gross_profit'
+        )
+
+    def get_gross_profit_percentage(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'gross_profit_percentage'
+        )
+    
+    def get_grand_total_gross_profit_percentage(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_gross_profit_percentage'
+        )
+    
+    def get_operating_income(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'operating_income'
+        )
+
+    def get_grand_total_operating_income(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_operating_income'
+        )
+    
+    def get_operating_income_percentage(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'operating_income_percentage'
+        )
+    
+    def get_grand_total_operating_income_percentage(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_operating_income_percentage'
+        )
+    
+    def get_net_income_before_tax(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'net_income_before_tax'
+        )
+    
+    def get_grand_total_net_income_before_tax(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_net_income_before_tax'
+        )
+    
+    def get_net_income_before_tax_percentage(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'net_income_before_tax_percentage'
+        )
+    
+    def get_grand_total_net_income_before_tax_percentage(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_net_income_before_tax_percentage'
+        )
+    
+    def get_net_income(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'net_income'
+        )
+    
+    def get_grand_total_net_income(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_net_income'
+        )
+    
+    def get_net_income_percentage(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'net_income_percentage'
+        )
+    
+    def get_grand_total_income_percentage(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_income_percentage'
+        )
+    
+    def get_EPS(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'EPS'
+        )
+
+    def get_EPS_growth(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'EPS_growth'
+        )
+    
+    def get_grand_total_EPS(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_EPS'
+        )
+    
+    def get_grand_total_EPS_growth(self):
+        return self._get_title_array_from_full_page(
+            full_page = self.full_page,
+            key = 'grand_total_EPS_growth'
+        )
+
+    # Content
+    def get_revenue_text(self):
+        return self.get_latest_generation(category='revenue')
+    
+    def get_grand_total_revenue_text(self):
+        return self.get_latest_generation(category='grand_total_revenue')
+    
+    def get_gross_profit_text(self):
+        return self.get_latest_generation(category='gross_profit')
+    
+    def get_grand_total_gross_profit_text(self):
+        return self.get_latest_generation(category='grand_total_gross_profit')
+    
+    def get_gross_profit_percentage_text(self):
+        return self.get_latest_generation(category='gross_profit_percentage')
+    
+    def get_grand_total_gross_profit_percentage_text(self):
+        return self.get_latest_generation(category='grand_total_gross_profit_percentage')
+    
+    def get_operating_income_text(self):
+        return self.get_latest_generation(category='operating_income')
+
+    def get_grand_total_operating_income_text(self):
+        return self.get_latest_generation(category='grand_total_operating_income')
+    
+    def get_operating_income_percentage_text(self):
+        return self.get_latest_generation(category='operating_income_percentage')
+    
+    def get_grand_total_operating_income_percentage_text(self):
+        return self.get_latest_generation(category='grand_total_operating_income_percentage')
+    
+    def get_net_income_before_tax_text(self):
+        return self.get_latest_generation(category='net_income_before_tax')
+    
+    def get_grand_total_net_income_before_tax_text(self):
+        return self.get_latest_generation(category='grand_total_net_income_before_tax')
+    
+    def get_net_income_before_tax_percentage_text(self):
+        return self.get_latest_generation(category='net_income_before_tax_percentage')
+    
+    def get_grand_total_net_income_before_tax_percentage_text(self):
+        return self.get_latest_generation(category='grand_total_net_income_before_tax_percentage')
+    
+    def get_net_income_text(self):
+        return self.get_latest_generation(category='net_income')
+    
+    def get_grand_total_net_income_text(self):
+        return self.get_latest_generation(category='grand_total_net_income')
+    
+    def get_net_income_percentage_text(self):
+        return self.get_latest_generation(category='net_income_percentage')
+    
+    def get_grand_total_income_percentage_text(self):
+        return self.get_latest_generation(category='grand_total_income_percentage')
+    
+    def get_EPS_text(self):
+        return self.get_latest_generation(category='EPS')
+    
+    def get_EPS_growth_text(self):
+        return self.get_latest_generation(category='EPS_growth')
+    
+    def get_grand_total_EPS_text(self):
+        return self.get_latest_generation(category='grand_total_EPS')
+    
+    def get_grand_total_EPS_growth_text(self):
+        return self.get_latest_generation(category='grand_total_EPS_growth')
+    
 class BalanceSheet(FundResponse):
     
     def __init__(self, ticker: str):
