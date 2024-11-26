@@ -151,4 +151,58 @@ class ResponseService:
 
         return result
 
+    @staticmethod
+    def format_dict_values(data: dict, decimal_places: int = 2) -> dict:
+        """
+        格式化字典中的 float 值，保留指定的小數位數。
+
+        :param data: 要處理的字典
+        :param decimal_places: 小數點位數，默認為 2
+        :return: 格式化後的字典
+        """
+        formatted_dict = {}
+
+        for key, value in data.items():
+            if isinstance(value, float):
+                # 將 float 格式化為指定的小數位數
+                formatted_dict[key] = round(value, decimal_places)
+            elif isinstance(value, dict):
+                # 如果值是嵌套字典，遞歸格式化
+                formatted_dict[key] = ResponseService.format_dict_values(value, decimal_places)
+            else:
+                # 其他類型保持原樣
+                formatted_dict[key] = value
+
+        return formatted_dict
     
+    @staticmethod
+    def float_to_percentage(value: float, decimal_places: int = 2) -> str:
+        """
+        将单个 float 值转换为百分比格式的字符串。
+
+        :param value: 要处理的浮点数
+        :param decimal_places: 小数点位数，默认 2
+        :return: 格式化为百分比的字符串
+        """
+        if not isinstance(value, float):
+            raise ValueError("The value must be a float.")
+        
+        return f"{value * 100:.{decimal_places}f}%"
+        
+    @staticmethod
+    def format_value_to_percentage(data: dict, keys: list, decimal_places: int = 2) -> dict:
+        """
+        将指定 key 对应的值通过 float_to_percentage 转换为百分比格式。
+
+        :param data: 包含数据的字典
+        :param keys: 需要转换的 key 列表
+        :param decimal_places: 小数点位数，默认 2
+        :return: 转换后的字典
+        """
+        formatted_data = {}
+        for key, value in data.items():
+            if key in keys and isinstance(value, (float, int)):
+                formatted_data[key] = ResponseService.float_to_percentage(value, decimal_places)
+            else:
+                formatted_data[key] = value
+        return ResponseService.format_dict_values(formatted_data)
