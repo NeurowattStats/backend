@@ -19,8 +19,15 @@ class ValueResponse(ResponseService):
 
     def get_value_table(self):
 
+        selected_cols = [
+            'year', 'P_E', 'P_FCF', 'P_B', 'P_S', 
+            'EV_OPI','EV_EBIT', 'EV_EBITDA', 'EV_S'
+        ]
+
+        df_selected = self.yearly_data[selected_cols]
+
         data = ResponseService.df_to_title_array(
-            df = self.yearly_data,
+            df = df_selected,
             index_col = 'year',
             empty_values = '不適用'
         )
