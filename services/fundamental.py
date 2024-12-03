@@ -185,30 +185,38 @@ class RevenStatements(FundResponse):
 
     def get_month_revenue(self):
 
-        data = self._get_data(self.full_page, 'month_revenue').reset_index()
+        data = self._get_data(self.full_page, 'month_revenue').T.reset_index()
         array = ResponseService.df_to_title_array(
             df=data,
-            index_col='month',
+            index_col='year',
             empty_values='不適用'
         )
 
         return array
     
     def get_revenue_over_years(self):
-        
-        return self._get_title_array_from_full_page(
-            full_page = self.full_page,
-            key = 'this_month_revenue_over_years'
+
+        data = self._get_data(self.full_page, 'this_month_revenue_over_years').T.reset_index()
+        array = ResponseService.df_to_title_array(
+            df=data,
+            index_col='year',
+            empty_values='不適用'
         )
+        return array
 
     def get_revenue_over_years_text(self):
         return self.get_latest_generation(category='revenue_over_years')
     
     def get_grand_total_over_years(self):
-        return self._get_title_array_from_full_page(
-            full_page = self.full_page,
-            key = 'grand_total_over_years'
+
+        data = self._get_data(self.full_page, 'grand_total_over_years').T.reset_index()
+        array = ResponseService.df_to_title_array(
+            df=data,
+            index_col='year',
+            empty_values='不適用'
         )
+
+        return array
     
     def get_grand_total_over_years_text(self):
         return self.get_latest_generation(category='grand_total_over_years')
