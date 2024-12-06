@@ -245,145 +245,169 @@ class ProfitLoss(FundResponse):
     def get_profit_lose(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'profit_lose'
+            key = 'profit_lose',
+            reverse=True
         )
     
     def get_grand_total_profit_lose(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_profit_lose'
+            key = 'grand_total_profit_lose',
+            reverse=True
         )
 
     def get_revenue(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'revenue'
+            key = 'revenue',
+            reverse=True
         )
 
     def get_grand_total_revenue(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_revenue'
+            key = 'grand_total_revenue',
+            reverse=True
         )
     
     def get_gross_profit(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'gross_profit'
+            key = 'gross_profit',
+            reverse=True
         )
 
     def get_grand_total_gross_profit(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_gross_profit'
+            key = 'grand_total_gross_profit',
+            reverse=True
         )
 
     def get_gross_profit_percentage(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'gross_profit_percentage'
+            key = 'gross_profit_percentage',
+            reverse=True
         )
     
     def get_grand_total_gross_profit_percentage(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_gross_profit_percentage'
+            key = 'grand_total_gross_profit_percentage',
+            reverse=True
         )
     
     def get_operating_income(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'operating_income'
+            key = 'operating_income',
+            reverse=True
         )
 
     def get_grand_total_operating_income(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_operating_income'
+            key = 'grand_total_operating_income',
+            reverse=True
         )
     
     def get_operating_income_percentage(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'operating_income_percentage'
+            key = 'operating_income_percentage',
+            reverse=True
         )
     
     def get_grand_total_operating_income_percentage(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_operating_income_percentage'
+            key = 'grand_total_operating_income_percentage',
+            reverse=True
         )
     
     def get_net_income_before_tax(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'net_income_before_tax'
+            key = 'net_income_before_tax',
+            reverse=True
         )
     
     def get_grand_total_net_income_before_tax(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_net_income_before_tax'
+            key = 'grand_total_net_income_before_tax',
+            reverse=True
         )
     
     def get_net_income_before_tax_percentage(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'net_income_before_tax_percentage'
+            key = 'net_income_before_tax_percentage',
+            reverse=True
         )
     
     def get_grand_total_net_income_before_tax_percentage(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_net_income_before_tax_percentage'
+            key = 'grand_total_net_income_before_tax_percentage',
+            reverse=True
         )
     
     def get_net_income(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'net_income'
+            key = 'net_income',
+            reverse=True
         )
     
     def get_grand_total_net_income(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_net_income'
+            key = 'grand_total_net_income',
+            reverse=True
         )
     
     def get_net_income_percentage(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'net_income_percentage'
+            key = 'net_income_percentage',
+            reverse=True
         )
     
     def get_grand_total_income_percentage(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_income_percentage'
+            key = 'grand_total_income_percentage',
+            reverse=True
         )
     
     def get_EPS(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'EPS'
+            key = 'EPS',
+            reverse=True
         )
 
     def get_EPS_growth(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'EPS_growth'
+            key = 'EPS_growth',
+            reverse=True
         )
     
     def get_grand_total_EPS(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_EPS'
+            key = 'grand_total_EPS',
+            reverse=True
         )
     
     def get_grand_total_EPS_growth(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key = 'grand_total_EPS_growth'
+            key = 'grand_total_EPS_growth',
+            reverse=True
         )
 
     # Content
@@ -470,13 +494,17 @@ class BalanceSheet(FundResponse):
             marker='不適用'
         )
 
-    def _get_and_format_data(self, key: str):
+    def _get_and_format_data(self, key: str, reverse:bool=True):
         """
         通用方法：根據鍵提取資料並轉換為標題數組格式
         :param key: 欲提取的資料鍵（如 'balance_sheet', 'total_asset', 'current_asset' 等）
         :return: TitleArray 實例
         """
-        data = self._get_data(self.full_page, key).reset_index()
+        if reverse:
+            data = self._get_data(self.full_page, key).T.reset_index()
+        else:
+            data = self._get_data(self.full_page, key).reset_index()
+
         array = FundResponse.df_to_title_array(
             df=data,
             index_col='index',
@@ -542,13 +570,15 @@ class CashflowSheet(FundResponse):
     def get_full_table(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key='cash_flow'
+            key='cash_flow',
+            reverse=True
         )
     
     def get_operation(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key='CASHO'
+            key='CASHO',
+            reverse=True
         )
     
     def get_operation_text(self):
@@ -557,7 +587,8 @@ class CashflowSheet(FundResponse):
     def get_investment(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key='CASHI'
+            key='CASHI',
+            reverse=True
         )
     
     def get_investment_text(self):
@@ -566,7 +597,8 @@ class CashflowSheet(FundResponse):
     def get_fundraising(self):
         return self._get_title_array_from_full_page(
             full_page = self.full_page,
-            key='CASHF'
+            key='CASHF',
+            reverse=True
         )
     
     def get_fundraising_text(self):

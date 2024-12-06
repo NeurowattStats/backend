@@ -4,6 +4,7 @@ from api.fundamental import router as fundamental_router
 from api.valuation import router as valuation_router
 from api.tech import router as tech_router
 from api.profit_loss import router as profit_loss_router
+from api.chip import router as chip_router
 from dotenv import load_dotenv
 
 import uvicorn
@@ -34,6 +35,9 @@ app.include_router(tech_router, prefix="/neurostats/tech", tags=["Tech"])  # 新
 
 # 包含 tech 的路由
 app.include_router(profit_loss_router, prefix="/neurostats/fundamental/profit_loss", tags=["ProfitAndLoss"])  # 新增的路由
+
+# 包含 tech 的路由
+app.include_router(chip_router, prefix="/neurostats/chip", tags=["Chip"])  # 新增的路由
 
 # 啟動應用
 if __name__ == "__main__":
