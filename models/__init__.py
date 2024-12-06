@@ -4,4 +4,5 @@ from .fundamental import (OverviewModel, PerShareModel, ProfitabilityModel,
                           BalanceSheetModel, OperatingIndicatorsModel)
 from .valuation import ValuationOverview
 from .tech import TechBasicIndexes, TechDailyIndexes, TechIndexes, TechIndexesList
+from .chip import InstitutionOverall
 from .common import TitleArray
