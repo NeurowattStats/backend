@@ -1,4 +1,3 @@
-
 # NeuroStats API
 
 此專案提供金融數據查詢的 API 服務，包括公司財務資料、每股數據、財務比率、月營收數據等多項資訊，使用 [FastAPI](https://fastapi.tiangolo.com/) 開發。
@@ -6,6 +5,7 @@
 ## 快速開始
 
 ### 環境需求
+
 - Python 3.8+
 - FastAPI
 - Uvicorn
@@ -28,10 +28,10 @@
    ```
 
    ```bash
-   cd utils 
+   cd utils
    git clone https://github.com/NeurowattStats/NeuroStats_API.git # 篩選 data package
    ```
-   
+
 3. 啟動 API 服務：
 
    首先，您可以在項目目錄下更改 `.env` 文件來動態設置主機和端口：
@@ -58,21 +58,21 @@
 
 ### Fundamental 路由
 
-| 路徑                                  | 方法  | 描述                     |
-|---------------------------------------|-------|--------------------------|
-| `/neurostats/fundamental/vitals/finance_data` | POST  | 財務分析-重要指標-財務概況  |
-| `/neurostats/fundamental/vitals/per_share`    | POST  | 財務分析-重要指標-每股財務狀況   |
-| `/neurostats/fundamental/vitals/ratios`       | POST  | 財務分析-重要指標-獲利能力  |
-| `/neurostats/fundamental/revenue/monthly`     | POST  | 財務分析-每月營收-採用IFRSs   |
-| `/neurostats/fundamental/revenue/this_month`  | POST  | 財務分析-每月營收-單月營收       |
-| `/neurostats/fundamental/revenue/this_month_text` | POST | 財務分析-每月營收-單月營收解析  |
+| 路徑                                              | 方法 | 描述                           |
+| ------------------------------------------------- | ---- | ------------------------------ |
+| `/neurostats/fundamental/vitals/finance_data`     | POST | 財務分析-重要指標-財務概況     |
+| `/neurostats/fundamental/vitals/per_share`        | POST | 財務分析-重要指標-每股財務狀況 |
+| `/neurostats/fundamental/vitals/ratios`           | POST | 財務分析-重要指標-獲利能力     |
+| `/neurostats/fundamental/revenue/monthly`         | POST | 財務分析-每月營收-採用 IFRSs   |
+| `/neurostats/fundamental/revenue/this_month`      | POST | 財務分析-每月營收-單月營收     |
+| `/neurostats/fundamental/revenue/this_month_text` | POST | 財務分析-每月營收-單月營收解析 |
 
 ### Valuation 路由
 
-| 路徑                                  | 方法  | 描述                     |
-|---------------------------------------|-------|--------------------------|
-| `/neurostats/valuation/overview`      | POST  | 價值投資-市場評價-過去4季總攬 |
-| `/neurostats/valuation/table`         | POST  | 價值投資-市場評價-過去10年表格 |
+| 路徑                             | 方法 | 描述                             |
+| -------------------------------- | ---- | -------------------------------- |
+| `/neurostats/valuation/overview` | POST | 價值投資-市場評價-過去 4 季總攬  |
+| `/neurostats/valuation/table`    | POST | 價值投資-市場評價-過去 10 年表格 |
 
 ### API 使用範例
 
@@ -82,29 +82,32 @@ ticker 限定為 str, ex: "2330"
 #### 取得公司財務數據
 
 **請求**
+
 ```javascript
 fetch("http://0.0.0.0:9090/neurostats/fundamental/vitals/finance_data", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ ticker: "2330" })
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ ticker: "2330" }),
 })
-.then(response => response.json())
-.then(data => {
+  .then((response) => response.json())
+  .then((data) => {
     console.log("Finance Data:", data);
-})
-.catch(error => {
+  })
+  .catch((error) => {
     console.error("Error fetching finance data:", error);
-});
+  });
 ```
 
 **請求**
+
 ```bash
 curl -X POST "http://0.0.0.0:9090/neurostats/fundamental/vitals/finance_data" -H "Content-Type: application/json" -d '{"ticker": "2330"}'
 ```
 
 **回應**
+
 ```json
 {
   "quarter": "2024 Q2",
@@ -123,11 +126,13 @@ curl -X POST "http://0.0.0.0:9090/neurostats/fundamental/vitals/finance_data" -H
 #### 取得估值概況
 
 **請求**
+
 ```bash
 curl -X POST "http://0.0.0.0:9090/neurostats/valuation/overview" -H "Content-Type: application/json" -d '{"ticker": "2330"}'
 ```
 
 **回應**
+
 ```json
 {
   "PE_Ratio": 28.15,
@@ -140,6 +145,7 @@ curl -X POST "http://0.0.0.0:9090/neurostats/valuation/overview" -H "Content-Typ
   "EV_S_Ratio": 4.9
 }
 ```
+
 ### 查看 API 文件
 
 API 啟動後，可以通過以下方式查看文件：
@@ -188,9 +194,9 @@ async def test_get_finance_data():
 ## 說明
 
 ### API 結構
+
 - `neurostats/fundamental/` 提供有關公司的財務基本面數據。
 - `neurostats/valuation/` 提供公司估值的相關數據。
-
 
 # 使用 Docker 啟動服務
 
@@ -201,7 +207,7 @@ async def test_get_finance_data():
 確保您在專案的根目錄，然後運行以下命令來構建 Docker 映像：
 
 ```bash
-docker build --build-arg GITHUB_TOKEN=your_personal_access_token -t neurostats-backend .
+docker build -t neurostats-backend .
 ```
 
 這會根據專案中的 Dockerfile 構建出一個名為 `neurostats-backend` 的 Docker 映像。
@@ -243,7 +249,3 @@ docker stop <CONTAINER_ID>
 ```
 
 用 `docker ps` 查找到 `<CONTAINER_ID>`。
-
-
-
-
