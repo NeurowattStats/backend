@@ -37,7 +37,13 @@ async def get_vitals(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps([
+        {
+            **item.dict(),
+            "date": item.date.isoformat() if hasattr(item, "date") else None  # 確保 date 可序列化
+        }
+        for item in data
+    ])) 
     return TechIndexesList(array=data)
 
 @router.post("/daily", response_model=TechIndexesList)
@@ -55,7 +61,13 @@ async def get_daily(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps([
+        {
+            **item.dict(),
+            "date": item.date.isoformat() if hasattr(item, "date") else None  # 確保 date 可序列化
+        }
+        for item in data
+    ]))
     return TechIndexesList(array=data)
 
 @router.post("/weekly", response_model=TechIndexesList)
@@ -73,7 +85,13 @@ async def get_weekly(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps([
+        {
+            **item.dict(),
+            "date": item.date.isoformat() if hasattr(item, "date") else None  # 確保 date 可序列化
+        }
+        for item in data
+    ]))
     return TechIndexesList(array=data)
 
 @router.post("/monthly", response_model=TechIndexesList)
@@ -91,7 +109,13 @@ async def get_monthly(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps([
+        {
+            **item.dict(),
+            "date": item.date.isoformat() if hasattr(item, "date") else None  # 確保 date 可序列化
+        }
+        for item in data
+    ]))
     return TechIndexesList(array=data)
 
 @router.post("/quarterly", response_model=TechIndexesList)
@@ -109,7 +133,13 @@ async def get_quarterly(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps([
+        {
+            **item.dict(),
+            "date": item.date.isoformat() if hasattr(item, "date") else None  # 確保 date 可序列化
+        }
+        for item in data
+    ]))
     return TechIndexesList(array=data)
     
 @router.post("/yearly", response_model=TechIndexesList)
@@ -127,5 +157,11 @@ async def get_yearly(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps([
+        {
+            **item.dict(),
+            "date": item.date.isoformat() if hasattr(item, "date") else None  # 確保 date 可序列化
+        }
+        for item in data
+    ]))
     return TechIndexesList(array=data)

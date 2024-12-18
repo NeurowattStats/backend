@@ -33,7 +33,10 @@ async def get_institution_overall(request: TickerRequest):
         content_method_name='get_overall_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps({
+        "content": data["content"],
+        "array": data["array"].__dict__  # Convert ChipOverall object to dictionary
+    }))  # Serialize data
     return data
 
 @router.post("/institution/latest")
@@ -51,7 +54,7 @@ async def get_institution_latest(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/institution/history")
@@ -69,7 +72,7 @@ async def get_institution_history(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data.dict())) # Serialize data
     return data
 
 @router.post("/margin_trade/overall")
@@ -88,7 +91,10 @@ async def get_margin_trade_overall(request: TickerRequest):
         content_method_name='get_overall_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps({
+        "content": data["content"],
+        "array": data["array"].__dict__  # Convert ChipOverall object to dictionary
+    }))  # Serialize data
     return data
 
 @router.post("/margin_trade/latest")
@@ -106,7 +112,7 @@ async def get_margin_trade_latest(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))
     return data
 
 @router.post("/margin_trade/history")
@@ -124,5 +130,5 @@ async def get_margin_trade_history(request: TickerRequest):
         include_content=False
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))
     return data
