@@ -161,7 +161,7 @@ async def get_month_revenue(request: TickerRequest):
         'get_month_revenue',
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/revenue/revenue_over_years")
@@ -180,7 +180,7 @@ async def get_revenue_over_years(request: TickerRequest):
         content_method_name='get_revenue_over_years_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/revenue/grand_total_over_years")
@@ -199,7 +199,7 @@ async def get_grand_total_over_years(request: TickerRequest):
         content_method_name='get_grand_total_over_years_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 # BalanceSheet
@@ -217,7 +217,7 @@ async def get_balance_sheet_full_table(request: TickerRequest):
         'get_full_table'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/balance_sheet/total_asset")
@@ -236,7 +236,7 @@ async def get_total_asset(request: TickerRequest):
         content_method_name='get_total_asset_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/balance_sheet/current_asset")
@@ -255,7 +255,7 @@ async def get_current_asset(request: TickerRequest):
         content_method_name='get_current_asset_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/balance_sheet/non_current_asset")
@@ -274,7 +274,7 @@ async def get_non_current_asset(request: TickerRequest):
         content_method_name='get_non_current_asset_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/balance_sheet/current_debt")
@@ -293,7 +293,7 @@ async def get_current_debt(request: TickerRequest):
         content_method_name='get_current_debt_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/balance_sheet/non_current_debt")
@@ -312,7 +312,7 @@ async def get_non_current_debt(request: TickerRequest):
         content_method_name='get_non_current_debt_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/balance_sheet/equity")
@@ -331,7 +331,7 @@ async def get_equity(request: TickerRequest):
         content_method_name='get_equity_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 # Cashflow
@@ -349,7 +349,7 @@ async def get_cashflow_full_table(request: TickerRequest):
         'get_full_table'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/cashflow/operation")
@@ -368,7 +368,7 @@ async def get_operation(request: TickerRequest):
         content_method_name='get_operation_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/cashflow/investment")
@@ -387,7 +387,7 @@ async def get_investment(request: TickerRequest):
         content_method_name='get_investment_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
 @router.post("/cashflow/fundraising")
@@ -406,5 +406,5 @@ async def get_fundraising(request: TickerRequest):
         content_method_name='get_fundraising_text'
     )
 
-    redis_connector.set(cache_key, json.dumps(data.dict()))  # Serialize data
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
