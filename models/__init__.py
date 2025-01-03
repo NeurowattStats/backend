@@ -6,3 +6,4 @@ from .valuation import ValuationOverview
 from .tech import TechBasicIndexes, TechDailyIndexes, TechIndexes, TechIndexesList
 from .chip import ChipOverall
 from .common import TitleArray
+from .financial_report import QueryInput, QueryResponse
