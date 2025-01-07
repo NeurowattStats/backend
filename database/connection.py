@@ -9,7 +9,6 @@ from llama_index.vector_stores.milvus import MilvusVectorStore
 
 # Load environment variables from .env file
 load_dotenv()
-openai.api_key = os.environ['OPENAI_KEY']
 
 
 class DatabaseConnector:
