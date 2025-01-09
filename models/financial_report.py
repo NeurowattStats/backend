@@ -2,16 +2,33 @@ from pydantic import BaseModel
 from typing import Optional, Union, List
 
 
+class TickerRequest(BaseModel):
+    """
+    功能:單純輸入ticker
+    目標:要求回應可選的財報列表
+    """
+    ticker: str
+
+class FinanceReportRequest(BaseModel):
+    """
+    指定財報的request
+    """
+
+    ticker: str
+    year: Optional[str] = '2024'
+    season: Optional[str] = '2'
+    top_k: Optional[int] = 3
+    zone: Optional[str] = 'tw'
+
+
 class QueryInput(BaseModel):
     """
     對chatBot輸入的問題
     """
     question: Optional[str] = None
     ticker: str
-    year: Optional[str] = '2024'
-    season: Optional[int] = 2
     top_k: Optional[int] = 3
-
+    zone: Optional[str] = 'tw'
 
 class QueryResponse(BaseModel):
     """
