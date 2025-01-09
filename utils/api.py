@@ -26,12 +26,12 @@ def handle_request(
                 return {'content': content, 'array': data}
             else:
                 raise AttributeError(
-                    f"No content method found for {content_method_name}")
+                    f"No content method found for {content_method_name}"
+                )
 
         return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 def handle_RAG_query(
         ticker,
@@ -39,6 +39,7 @@ def handle_RAG_query(
         season,
         top_k,
         question,
+        zone,
         service_class,
         method_name,
         include_content=False,
@@ -50,7 +51,7 @@ def handle_RAG_query(
     輸入top_k 決定參考前幾名的文件
     """
     try:
-        responser = service_class(ticker, year, season, top_k, question)
+        responser = service_class(ticker, year, season, top_k, question, zone)
         method = getattr(responser, method_name)
         data = method()
         # 如果 include_content 為 True 且 content_method_name 被提供
@@ -65,7 +66,8 @@ def handle_RAG_query(
                 return {'content': content, 'array': data}
             else:
                 raise AttributeError(
-                    f"No content method found for {content_method_name}")
+                    f"No content method found for {content_method_name}"
+                )
 
         return data
     except Exception as e:

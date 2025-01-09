@@ -31,29 +31,55 @@ class MongoConnector(DatabaseConnector):
 
 class MilvusConnector(DatabaseConnector):
 
-    def __init__(self, address: str, token: str):
+    def __init__(
+        self,
+        address: str,
+        token: str,
+        db_name: str = "finance_report_tw"
+    ):
         super().__init__(address)
         self.token = token
-        self.client = MilvusClient(uri=self.address, token=self.token)
+        self.client = MilvusClient(
+            uri=self.address,
+            token=self.token,
+            db_name=db_name
+        )
 
-    def point_collection(self, collection: str) -> None:
+    def point_collection(
+        self,
+        collection: str,
+        db_name: str = 'finance_report_tw'
+    ) -> None:
         """
         指定Milvus的collection
         """
-        self.vector_store = MilvusVectorStore(uri=self.address,
-                                              token=self.token,
-                                              collection_name=collection,
-                                              overwrite=False,
-                                              similarity_metric='cosine')
+        self.vector_store = MilvusVectorStore(
+            uri=self.address,
+            token=self.token,
+            collection_name=collection,
+            dim=1536,
+            overwrite=False,
+            similarity_metric='cosine',
+            db_name=db_name
+        )
 
         return self.vector_store
 
-    def load_vector_store(self, collection: str) -> None:
+    def load_vector_store(
+        self,
+        collection: str,
+        db_name: str = 'finance_report_tw'
+    ) -> None:
         """
         輸入RAG需要的index (輸入DB中所有index)
         """
-        self.point_collection(collection=collection)
-        self.index = VectorStoreIndex.from_vector_store(self.vector_store)
+        self.point_collection(
+            collection=collection,
+            db_name=db_name
+        )
+        self.index = VectorStoreIndex.from_vector_store(
+            vector_store=self.vector_store
+        )
 
         return self.index
 
@@ -62,10 +88,12 @@ class RedisConnector(DatabaseConnector):
 
     def __init__(self, host: str, port: int, password: str):
         super().__init__(f"{host}:{port}")
-        self.client = redis.StrictRedis(host=host,
-                                        port=port,
-                                        password=password,
-                                        decode_responses=True)
+        self.client = redis.StrictRedis(
+            host=host,
+            port=port,
+            password=password,
+            decode_responses=True
+        )
 
     def get(self, key: str):
         return self.client.get(key)
@@ -78,8 +106,7 @@ class RedisConnector(DatabaseConnector):
 
 
 # Initialize Redis connection
-redis_connector = RedisConnector(host=os.getenv("REDIS_ADDRESS",
-                                                "default_address"),
-                                 port=6379,
-                                 password=os.getenv("REDIS_PASSWORD",
-                                                    "default_pwd"))
+redis_connector = RedisConnector(
+    host=os.getenv("REDIS_ADDRESS","default_address"),
+    port=6379,
+    password=os.getenv("REDIS_PASSWORD","default_pwd"))

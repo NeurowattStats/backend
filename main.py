@@ -11,6 +11,7 @@ from database.connection import redis_connector  # Import the existing redis_con
 
 import uvicorn
 import os
+import openai
 
 # Load environment variables from .env file
 load_dotenv()
