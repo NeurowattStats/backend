@@ -5,14 +5,17 @@ from api.valuation import router as valuation_router
 from api.tech import router as tech_router
 from api.profit_loss import router as profit_loss_router
 from api.chip import router as chip_router
+from api.financial_report import router as financial_report_router
 from dotenv import load_dotenv
 from database.connection import redis_connector  # Import the existing redis_connector
 
 import uvicorn
 import os
+import openai
 
 # Load environment variables from .env file
 load_dotenv()
+openai.api_key = os.environ['OPENAI_KEY']
 
 # Flush all data from Redis
 redis_connector.client.flushall()
@@ -42,6 +45,9 @@ app.include_router(profit_loss_router, prefix="/neurostats/fundamental/profit_lo
 
 # Include chip router
 app.include_router(chip_router, prefix="/neurostats/chip", tags=["Chip"])  # New router
+
+# Inclue financial report RAG router
+app.include_router(financial_report_router, prefix="/neurostats/RAG", tags=['RAG']) 
 
 # Start application
 if __name__ == "__main__":

@@ -6,3 +6,4 @@ from .valuation import ValueResponse
 from .tech import (TechVitals, TechDaily, TechWeekly, 
                    TechMonthly, TechQuarterly, TechYearly)
 from .chip import InstitutionResponse, MarginTrade
+from .financial_report import FinancialReportService, RAGService

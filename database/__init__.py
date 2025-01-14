@@ -1,2 +1,2 @@
-from .connection import DatabaseConnector, MongoConnector
-from .query import MongoHelper
+from .connection import DatabaseConnector, MongoConnector, MilvusConnector
+from .query import MongoHelper, MilvusHelper
