@@ -1,15 +1,13 @@
-from pymongo import MongoClient
-from database import MongoConnector, MongoHelper
+from .base import ResponseService
 import os
 
-class EarningsCallResponse:
+class EarningsCallResponse(ResponseService):
     """Service for handling earnings call analysis operations."""
     def __init__(self, ticker: str, year: int, quarter: int):
         """Initialize the earnings call service."""
+        super().__init__()
         self.mongo_address = os.getenv("MONGO_URI")
-        self.db_connector = MongoConnector(self.mongo_address)
-        self.mongo_clinet = MongoClient(os.getenv('MONGO_URI'))
-        self.query_helper = MongoHelper()
+
         self.ticker = ticker
         self.year = year
         self.quarter = quarter
