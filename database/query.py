@@ -23,3 +23,12 @@ class MongoHelper(QueryHelper):
         except Exception as e:
             print(f"Error finding the latest document: {e}")
             return None
+
+
+class MilvusHelper(QueryHelper):
+    """
+    Milvus相關的取用...等函式
+    """
+    def __init__(self):
+        super().__init__()
+    
