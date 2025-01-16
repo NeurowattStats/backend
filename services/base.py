@@ -72,7 +72,7 @@ class ResponseService:
         )
         return array
     
-    def get_latest_generation(self, category: str) -> str:
+    def get_lastest_generation(self, category: str) -> str:
         """
         查詢最新的指定 category 的 generation。
 
@@ -80,7 +80,7 @@ class ResponseService:
         :return: 最新的 generation 或 '不適用' (如未找到)
         """
         try:
-            result = self.query_helper.find_the_lastest(
+            result = self.query_helper.find_the_latest(
                 collection=self.content_collection,  # 修正為 content_collection
                 query={"category": category}
             )

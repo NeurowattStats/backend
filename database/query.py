@@ -9,7 +9,7 @@ class MongoHelper(QueryHelper):
         super().__init__()
 
     @staticmethod
-    def find_the_lastest(
+    def find_the_latest(
         collection: collection.Collection,
         query: dict,
         projection: dict = None
