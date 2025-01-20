@@ -8,3 +8,4 @@ from .tech import (TechVitals, TechDaily, TechWeekly,
 from .chip import InstitutionResponse, MarginTrade
 from .financial_report import FinancialReportService, RAGService
 from .earnings_call import EarningsCallResponse 
+from .tej import TEJCompanySelfSettlement, TEJFinanceStatement
