@@ -1,7 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from models import (
-    TEJCompanySelfSettlementResponse,
-    TEJFinancetStatementResponse,
     TickerRequest,
 )
 from services import (
