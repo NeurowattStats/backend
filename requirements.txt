@@ -94,11 +94,11 @@ nbconvert==7.16.4
 nbformat==5.10.4
 nest-asyncio==1.6.0
 networkx==3.4.2
-neurostats_API==0.0.17
+neurostats_API==0.0.18
 nltk==3.9.1
 notebook==7.2.2
 notebook_shim==0.2.4
-numpy==2.2.1
+numpy==2.2.2
 openai==1.58.1
 overrides==7.7.0
 packaging==24.1
@@ -170,4 +170,4 @@ websocket-client==1.8.0
 widgetsnbextension==4.0.13
 wrapt==1.17.0
 yarl==1.18.3
-yfinance==0.2.51
+yfinance==0.2.52
