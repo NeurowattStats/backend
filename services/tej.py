@@ -31,6 +31,16 @@ class TEJService(ResponseService):
             start_date="2024-01-01", 
             report_type="Q"
         )
+    
+    def get_serial_data_with_growth(self):
+        """
+        API呼叫單純每季的數值(有成長率)
+        """
+
+        return self._get_data_with_growth(
+            fetch_mode=self.data_fetcher.FetchMode.QOQ,
+            report_type='Q'
+        )
 
     def _get_data_without_growth(self, fetch_mode, start_date=None, report_type="Q"):
         try:
@@ -55,7 +65,35 @@ class TEJService(ResponseService):
             return array
         except Exception as e:
             return f"Error retriving TEJ data for {self.ticker} : {str(e)}"
+    
+    def _get_data_with_growth(self, fetch_mode, start_date=None, report_type = 'Q'):
+        try:
+            data = self.data_fetcher.get(
+                self.ticker,
+                fetch_mode=fetch_mode,
+                report_type=report_type,
+                start_date=start_date,
+            )
+            for key, df in data.items():
+                df = df.rename(index = {x : f"{key}_{x}" for x in df.index})
+                df = df.T.reset_index()
+                df = ResponseService.replace_empty_values(
+                    df, 
+                    marker='不適用'
+                )
 
+                data[key] = self.df_to_title_array(
+                    df=df,
+                    index_col='index'
+                )
+                
+            dfs  = []
+            for df in data.values():
+                dfs += df
+
+            return dfs
+        except Exception as e:
+            return f"Error retriving TEJ data for {self.ticker} : {str(e)}"
 
 class TEJFinanceStatement(TEJService):
 
