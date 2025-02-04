@@ -35,7 +35,7 @@ class InstitutionResponse(ChipResponse):
     
     def get_overall_text(self):
 
-        return self.get_latest_generation(category='institution')
+        return self.get_lastest_generation(category='institution')
     
     def get_latest(self):
 
@@ -97,7 +97,7 @@ class MarginTrade(ChipResponse):
     
     def get_overall_text(self):
 
-        return self.get_latest_generation(category='margin_trade')
+        return self.get_lastest_generation(category='margin_trade')
     
     def get_latest(self):
 
