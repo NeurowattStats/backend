@@ -17,8 +17,7 @@ class TEJService(ResponseService):
         API呼叫單純每季的數值(無成長率)
         """
         return self._get_data_without_growth(
-            fetch_mode=self.data_fetcher.FetchMode.QOQ_NOCAL, 
-            start_date="2024-01-01", 
+            fetch_mode=self.data_fetcher.FetchMode.QOQ_NOCAL,
             report_type="Q"
         )
 
@@ -28,7 +27,6 @@ class TEJService(ResponseService):
         """
         return self._get_data_without_growth(
             fetch_mode=self.data_fetcher.FetchMode.YOY_NOCAL,
-            start_date="2024-01-01", 
             report_type="Q"
         )
     
