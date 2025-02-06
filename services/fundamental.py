@@ -220,6 +220,17 @@ class RevenStatements(FundResponse):
     
     def get_grand_total_over_years_text(self):
         return self.get_lastest_generation(category='grand_total_over_years')
+    
+    def get_latest_revenue_and_growth(self):
+
+        data = self._get_data(self.full_page, 'recent_month_revenue').T.reset_index()
+        array = ResponseService.df_to_title_array(
+            df=data,
+            index_col='date',
+            empty_values='不適用'
+        )
+
+        return array
 
 class ProfitLoss(FundResponse):
     
