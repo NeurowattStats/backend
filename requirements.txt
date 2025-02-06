@@ -10,9 +10,9 @@ asttokens==2.4.1
 async-lru==2.0.4
 attrs==24.2.0
 babel==2.16.0
-beautifulsoup4==4.12.3
+beautifulsoup4==4.13.3
 bleach==6.2.0
-certifi==2024.12.14
+certifi==2025.1.31
 cffi==1.17.1
 charset-normalizer==3.4.1
 click==8.1.7
@@ -94,7 +94,7 @@ nbconvert==7.16.4
 nbformat==5.10.4
 nest-asyncio==1.6.0
 networkx==3.4.2
-neurostats_API==0.0.20
+neurostats_API==0.0.21
 nltk==3.9.1
 notebook==7.2.2
 notebook_shim==0.2.4
@@ -105,7 +105,7 @@ packaging==24.1
 pandas==2.2.3
 pandocfilters==1.5.1
 parso==0.8.4
-peewee==3.17.8
+peewee==3.17.9
 pexpect==4.9.0
 pillow==11.0.0
 platformdirs==4.3.6
@@ -122,14 +122,14 @@ pydantic==2.9.2
 pydantic_core==2.23.4
 Pygments==2.18.0
 pymilvus==2.5.2
-pymongo==4.10.1
+pymongo==4.11
 pypdf==5.1.0
 pytest==8.3.3
 pytest-asyncio==0.24.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-json-logger==2.0.7
-pytz==2024.2
+pytz==2025.1
 PyYAML==6.0.2
 pyzmq==26.2.0
 redis==5.2.1
