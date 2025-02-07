@@ -94,7 +94,7 @@ nbconvert==7.16.4
 nbformat==5.10.4
 nest-asyncio==1.6.0
 networkx==3.4.2
-neurostats_API==0.0.21
+neurostats_API==0.0.21b0
 nltk==3.9.1
 notebook==7.2.2
 notebook_shim==0.2.4
