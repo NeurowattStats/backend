@@ -205,7 +205,7 @@ class RevenStatements(FundResponse):
         return array
 
     def get_revenue_over_years_text(self):
-        return self.get_latest_generation(category='revenue_over_years')
+        return self.get_lastest_generation(category='revenue_over_years')
     
     def get_grand_total_over_years(self):
 
@@ -219,7 +219,18 @@ class RevenStatements(FundResponse):
         return array
     
     def get_grand_total_over_years_text(self):
-        return self.get_latest_generation(category='grand_total_over_years')
+        return self.get_lastest_generation(category='grand_total_over_years')
+    
+    def get_latest_revenue_and_growth(self):
+
+        data = self._get_data(self.full_page, 'recent_month_revenue').T.reset_index()
+        array = ResponseService.df_to_title_array(
+            df=data,
+            index_col='date',
+            empty_values='不適用'
+        )
+
+        return array
 
 class ProfitLoss(FundResponse):
     
@@ -412,70 +423,70 @@ class ProfitLoss(FundResponse):
 
     # Content
     def get_revenue_text(self):
-        return self.get_latest_generation(category='revenue')
+        return self.get_lastest_generation(category='revenue')
     
     def get_grand_total_revenue_text(self):
-        return self.get_latest_generation(category='grand_total_revenue')
+        return self.get_lastest_generation(category='grand_total_revenue')
     
     def get_gross_profit_text(self):
-        return self.get_latest_generation(category='gross_profit')
+        return self.get_lastest_generation(category='gross_profit')
     
     def get_grand_total_gross_profit_text(self):
-        return self.get_latest_generation(category='grand_total_gross_profit')
+        return self.get_lastest_generation(category='grand_total_gross_profit')
     
     def get_gross_profit_percentage_text(self):
-        return self.get_latest_generation(category='gross_profit_percentage')
+        return self.get_lastest_generation(category='gross_profit_percentage')
     
     def get_grand_total_gross_profit_percentage_text(self):
-        return self.get_latest_generation(category='grand_total_gross_profit_percentage')
+        return self.get_lastest_generation(category='grand_total_gross_profit_percentage')
     
     def get_operating_income_text(self):
-        return self.get_latest_generation(category='operating_income')
+        return self.get_lastest_generation(category='operating_income')
 
     def get_grand_total_operating_income_text(self):
-        return self.get_latest_generation(category='grand_total_operating_income')
+        return self.get_lastest_generation(category='grand_total_operating_income')
     
     def get_operating_income_percentage_text(self):
-        return self.get_latest_generation(category='operating_income_percentage')
+        return self.get_lastest_generation(category='operating_income_percentage')
     
     def get_grand_total_operating_income_percentage_text(self):
-        return self.get_latest_generation(category='grand_total_operating_income_percentage')
+        return self.get_lastest_generation(category='grand_total_operating_income_percentage')
     
     def get_net_income_before_tax_text(self):
-        return self.get_latest_generation(category='net_income_before_tax')
+        return self.get_lastest_generation(category='net_income_before_tax')
     
     def get_grand_total_net_income_before_tax_text(self):
-        return self.get_latest_generation(category='grand_total_net_income_before_tax')
+        return self.get_lastest_generation(category='grand_total_net_income_before_tax')
     
     def get_net_income_before_tax_percentage_text(self):
-        return self.get_latest_generation(category='net_income_before_tax_percentage')
+        return self.get_lastest_generation(category='net_income_before_tax_percentage')
     
     def get_grand_total_net_income_before_tax_percentage_text(self):
-        return self.get_latest_generation(category='grand_total_net_income_before_tax_percentage')
+        return self.get_lastest_generation(category='grand_total_net_income_before_tax_percentage')
     
     def get_net_income_text(self):
-        return self.get_latest_generation(category='net_income')
+        return self.get_lastest_generation(category='net_income')
     
     def get_grand_total_net_income_text(self):
-        return self.get_latest_generation(category='grand_total_net_income')
+        return self.get_lastest_generation(category='grand_total_net_income')
     
     def get_net_income_percentage_text(self):
-        return self.get_latest_generation(category='net_income_percentage')
+        return self.get_lastest_generation(category='net_income_percentage')
     
     def get_grand_total_income_percentage_text(self):
-        return self.get_latest_generation(category='grand_total_income_percentage')
+        return self.get_lastest_generation(category='grand_total_income_percentage')
     
     def get_EPS_text(self):
-        return self.get_latest_generation(category='EPS')
+        return self.get_lastest_generation(category='EPS')
     
     def get_EPS_growth_text(self):
-        return self.get_latest_generation(category='EPS_growth')
+        return self.get_lastest_generation(category='EPS_growth')
     
     def get_grand_total_EPS_text(self):
-        return self.get_latest_generation(category='grand_total_EPS')
+        return self.get_lastest_generation(category='grand_total_EPS')
     
     def get_grand_total_EPS_growth_text(self):
-        return self.get_latest_generation(category='grand_total_EPS_growth')
+        return self.get_lastest_generation(category='grand_total_EPS_growth')
     
 class BalanceSheet(FundResponse):
     
@@ -536,22 +547,22 @@ class BalanceSheet(FundResponse):
     # 以下是 text 方法部分：
 
     def get_total_asset_text(self):
-        return self.get_latest_generation(category='total_asset')
+        return self.get_lastest_generation(category='total_asset')
     
     def get_current_asset_text(self):
-        return self.get_latest_generation(category='current_asset')
+        return self.get_lastest_generation(category='current_asset')
 
     def get_non_current_asset_text(self):
-        return self.get_latest_generation(category='non_current_asset')
+        return self.get_lastest_generation(category='non_current_asset')
 
     def get_current_debt_text(self):
-        return self.get_latest_generation(category='current_debt')
+        return self.get_lastest_generation(category='current_debt')
     
     def get_non_current_debt_text(self):
-        return self.get_latest_generation(category='non_current_debt')
+        return self.get_lastest_generation(category='non_current_debt')
 
     def get_equity_text(self):
-        return self.get_latest_generation(category='equity')
+        return self.get_lastest_generation(category='equity')
 
 class CashflowSheet(FundResponse):
 
@@ -582,7 +593,7 @@ class CashflowSheet(FundResponse):
         )
     
     def get_operation_text(self):
-        return self.get_latest_generation(category='operation')
+        return self.get_lastest_generation(category='operation')
     
     def get_investment(self):
         return self._get_title_array_from_full_page(
@@ -592,7 +603,7 @@ class CashflowSheet(FundResponse):
         )
     
     def get_investment_text(self):
-        return self.get_latest_generation(category='investment')
+        return self.get_lastest_generation(category='investment')
     
     def get_fundraising(self):
         return self._get_title_array_from_full_page(
@@ -602,7 +613,7 @@ class CashflowSheet(FundResponse):
         )
     
     def get_fundraising_text(self):
-        return self.get_latest_generation(category='fundraising')
+        return self.get_lastest_generation(category='fundraising')
 
 class Dividend(FundResponse):
 

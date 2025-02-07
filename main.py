@@ -1,50 +1,66 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends  # Import Depends
 from fastapi.middleware.cors import CORSMiddleware
 from api.fundamental import router as fundamental_router
 from api.valuation import router as valuation_router
 from api.tech import router as tech_router
 from api.profit_loss import router as profit_loss_router
 from api.chip import router as chip_router
+from api.financial_report import router as financial_report_router
+from api.earnings_call import router as earnings_call_router 
+from api.tej import router as tej_router
 from dotenv import load_dotenv
+from database.connection import redis_connector  # Import the existing redis_connector
 
 import uvicorn
 import os
+import openai
 
-# 加載 .env 文件中的環境變量
+# Load environment variables from .env file
 load_dotenv()
+openai.api_key = os.environ['OPENAI_KEY']
+
+# Flush all data from Redis
+redis_connector.client.flushall()
 
 app = FastAPI()
 
-# 設置 CORS 允許的來源，視需求可修改
+# Set CORS allowed origins, modify as needed
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 允許所有來源，建議根據需求設定特定的域
+    allow_origins=["*"],  # Allow all origins, consider setting specific domains based on needs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 包含 fundamental 的路由
+# Include fundamental router
 app.include_router(fundamental_router, prefix="/neurostats/fundamental", tags=["Fundamental"])
 
-# 包含 valuation 的路由
+# Include valuation router
 app.include_router(valuation_router, prefix="/neurostats/valuation", tags=["Valuation"])
 
-# 包含 tech 的路由
-app.include_router(tech_router, prefix="/neurostats/tech", tags=["Tech"])  # 新增的路由
+# Include tech router
+app.include_router(tech_router, prefix="/neurostats/tech", tags=["Tech"])  # New router
 
-# 包含 tech 的路由
-app.include_router(profit_loss_router, prefix="/neurostats/fundamental/profit_loss", tags=["ProfitAndLoss"])  # 新增的路由
+# Include profit_loss router
+app.include_router(profit_loss_router, prefix="/neurostats/fundamental/profit_loss", tags=["ProfitAndLoss"])  # New router
 
-# 包含 tech 的路由
-app.include_router(chip_router, prefix="/neurostats/chip", tags=["Chip"])  # 新增的路由
+# Include chip router
+app.include_router(chip_router, prefix="/neurostats/chip", tags=["Chip"])  # New router
 
-# 啟動應用
+# Inclue financial report RAG router
+app.include_router(financial_report_router, prefix="/neurostats/RAG", tags=['RAG']) 
+
+# Include earnings call router
+app.include_router(earnings_call_router, prefix="/neurostats/earnings_call", tags=['EarningsCall'])
+
+# Inclue TEJ data-related router
+app.include_router(tej_router, prefix = '/neurostats/tej', tags= ["TEJ"])
+
+# Start application
 if __name__ == "__main__":
-    
-    # 從環境變量中獲取主機和端口，默認為 0.0.0.0 和 8080
+    # Get host and port from environment variables, default to 0.0.0.0 and 8080
     host = os.getenv("HOST", "0.0.0.0")
     port = int(os.getenv("PORT", 8080))
 
-    if __name__ == "__main__":
-        uvicorn.run(app, host=host, port=port)
+    uvicorn.run(app, host=host, port=port)
