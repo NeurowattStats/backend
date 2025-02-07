@@ -202,6 +202,22 @@ async def get_grand_total_over_years(request: TickerRequest):
     redis_connector.set(cache_key, json.dumps(data))  # Serialize data
     return data
 
+@router.post("/revenue/recent_revenue")
+async def get_recnet_month_revenue(request: TickerRequest):
+    cache_key = f"{request.ticker}:RevenStatements_get_recent_revenue"
+    cached_data = redis_connector.get(cache_key)
+
+    if cached_data:
+        return json.loads(cached_data)  # Deserialize cached data
+
+    data = handle_request(
+        request.ticker, 
+        RevenStatements, 
+        'get_latest_revenue_and_growth',
+    )
+
+    redis_connector.set(cache_key, json.dumps(data))  # Serialize data
+    return data
 # BalanceSheet
 @router.post("/balance_sheet/full_table")
 async def get_balance_sheet_full_table(request: TickerRequest):
